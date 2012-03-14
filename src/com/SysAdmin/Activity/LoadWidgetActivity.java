@@ -2,14 +2,12 @@ package com.SysAdmin.Activity;
 
 import java.io.File;
 
-import com.SysAdmin.AppFacade;
 import com.SysAdmin.FilePathFacade;
 import com.SysAdmin.R;
 import com.SysAdmin.EventListener.EventListener_LoadWidget;
 
 import android.app.ListActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 
 
@@ -29,22 +27,28 @@ public class LoadWidgetActivity extends ListActivity
 	{
 		super.onCreate(_icicle);
 		
-		this.initializeObjects();			
+		this.initializeObjects();
 		
-		ArrayAdapter<String> dataSource = new ArrayAdapter<String>(this, R.layout.list_item, this.getFilenames());
-		
-		this.setListAdapter(dataSource);
+		this.fillListView();
 	}
 	
 	private void initializeObjects()
 	{
 		this.mEventListener_LoadWidget = new EventListener_LoadWidget(this);
 		this.mEventListener_LoadWidget.setEvents();
+		
+		this.getListView().setEmptyView(this.getListView().findViewById(R.id.empty_view));
+	}
+	
+	private void fillListView()
+	{
+		ArrayAdapter<String> dataSource = new ArrayAdapter<String>(this,R.layout.list_item, R.id.textView_list, 
+																	this.getFilenames());
+		this.setListAdapter(dataSource);	
 	}
 	
 	private String[] getFilenames()
 	{
-		Log.d(AppFacade.GetTag(), FilePathFacade.GetSavedDirectory());
 		File savedWidgets = new File(FilePathFacade.GetSavedDirectory());
 		savedWidgets.mkdirs();
 		File[] files = savedWidgets.listFiles();

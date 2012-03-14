@@ -1,10 +1,10 @@
 package com.SysAdmin;
 
 // android
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -24,13 +24,11 @@ public class UpdateService extends RemoteViewsService
 class UpdateRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 {
 	private Context mContext = null;
-	private Integer mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private Cursor mCursor = null;
 
 	public UpdateRemoteViewsFactory(Context _context, Intent _intent)
 	{
 		this.mContext = _context;
-		this.mAppWidgetId = _intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 	}
 	
 	public int getCount() {
@@ -48,10 +46,15 @@ class UpdateRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		return null;
 	}
 
-	public RemoteViews getViewAt(int _position) {
-
+	public RemoteViews getViewAt(int _position) 
+	{
+		String name = "";
+		
+		if(mCursor.moveToPosition(_position))
+			name = mCursor.getString(mCursor.getColumnIndex("name"));
+		
 		RemoteViews rViews = new RemoteViews(this.mContext.getPackageName(), R.layout.list_item);
-		rViews.setTextViewText(R.id.textView_Service, String.valueOf(_position));			
+		rViews.setTextViewText(R.id.textView_list, name);			
 		
 		return rViews;
 	}
@@ -72,6 +75,8 @@ class UpdateRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		if(null != this.mCursor)
 			this.mCursor.close();
 		
+		this.mCursor = this.getTestCursor();
+		
 		// Download, parse and fill cursor
 	}
 
@@ -80,4 +85,15 @@ class UpdateRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 			this.mCursor.close();
 	}
 	
+	private Cursor getTestCursor()
+	{
+		MatrixCursor cursor = new MatrixCursor(new String[]{"_id","name"});
+		
+		for(int i = 0; i<20; ++i)
+		{
+			cursor.addRow(new Object[]{new Integer(i), "asdf"+i});
+		}
+		
+		return cursor;
+	}
 }

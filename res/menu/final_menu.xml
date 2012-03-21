@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
     <item android:id="@+id/menuItemSave" 
         android:showAsAction="ifRoom" 
         android:title="Save" 
         android:menuCategory="system" />
-    <item android:id="@+id/menuItemLoad" 
-        android:showAsAction="ifRoom" 
-        android:title="Load" 
-        android:menuCategory="system" />
+        
     <item android:id="@+id/menuItemAbort" 
         android:showAsAction="ifRoom" 
         android:title="Cancel" 
         android:menuCategory="system" />
+    
     <item android:id="@+id/menuItemFinish" 
         android:showAsAction="ifRoom" 
         android:title="Finish" 
         android:menuCategory="system" />
+    
 </menu>

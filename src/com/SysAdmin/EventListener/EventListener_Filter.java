@@ -3,6 +3,8 @@ package com.SysAdmin.EventListener;
 import com.SysAdmin.Activity.FilterActivity;
 
 /**
+ * Contains and handles every event of the filter activity.
+ * 
  * @author Lukas Bernreiter
  * @version 0.2, 22/02/2012
  * @since 0.2

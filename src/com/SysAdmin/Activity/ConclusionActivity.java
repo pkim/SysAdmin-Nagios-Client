@@ -19,9 +19,9 @@ import android.view.MenuItem;
  * @version 0.1, 19/02/2012S
  * @since 0.1
  */
-public class Conclusion extends Activity {
+public class ConclusionActivity extends Activity {
 	
-	public Conclusion()
+	public ConclusionActivity()
 	{
 		super();
 	}
@@ -54,7 +54,7 @@ public class Conclusion extends Activity {
 	    switch (item.getItemId()) {
 	        case android.R.id.home:
 	            // app icon in action bar clicked; go home
-	            Intent intent = new Intent(this, CheckServer.class);
+	            Intent intent = new Intent(this, CheckServerActivity.class);
 	            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	            startActivity(intent);
 	            

@@ -1,7 +1,7 @@
 package com.SysAdmin.EventListener;
 
 
-import com.SysAdmin.Activity.Conclusion;
+import com.SysAdmin.Activity.ConclusionActivity;
 
 /**
  * @author Lukas Bernreiter
@@ -11,10 +11,10 @@ import com.SysAdmin.Activity.Conclusion;
 public class EventListener_Conclusion 
 {
 	// Objects
-	private Conclusion conclusion = null;
+	private ConclusionActivity conclusion = null;
 	
 	// Constructor
-	public EventListener_Conclusion(Conclusion _conclusion)
+	public EventListener_Conclusion(ConclusionActivity _conclusion)
 	{
 		this.conclusion = _conclusion;
 	}

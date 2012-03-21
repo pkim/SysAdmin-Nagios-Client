@@ -18,7 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 // com.SysAdmin
 import com.SysAdmin.AppFacade;
-import com.SysAdmin.Activity.CheckServer;
+import com.SysAdmin.Activity.CheckServerActivity;
 
 /**
  * Event listener for the configuration activity.
@@ -31,7 +31,7 @@ import com.SysAdmin.Activity.CheckServer;
 public class EventListener_Server implements OnClickListener, Runnable {
 
 	// Objects
-	private CheckServer mConfigure = null;
+	private CheckServerActivity mConfigure = null;
 	private ByteArrayBuffer mByteArrayBuffer  = null;
 	private ProgressDialog mProgressDialog 	  = null;
 	private Boolean mFailure 				  = false;
@@ -47,7 +47,7 @@ public class EventListener_Server implements OnClickListener, Runnable {
 	 * 
 	 * @param _configure The instance.
 	 */
-	public EventListener_Server(CheckServer _configure)
+	public EventListener_Server(CheckServerActivity _configure)
 	{	
 		if(null != _configure)
 			this.mConfigure = _configure;

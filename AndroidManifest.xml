@@ -22,7 +22,7 @@
 	            android:resource="@xml/widget_info" />
 	        
 	    </receiver>
-	    <activity android:name=".Activity.CheckServer" 
+	    <activity android:name=".Activity.CheckServerActivity" 
 	        android:uiOptions="splitActionBarWhenNarrow"
 	        android:theme="@android:style/Theme.Holo">
     		<intent-filter>
@@ -30,7 +30,7 @@
     		</intent-filter>
 		</activity>	   
 		
-		<activity android:name=".Activity.Conclusion"
+		<activity android:name=".Activity.ConclusionActivity"
 		    android:theme="@android:style/Theme.Holo"
 		    android:uiOptions="splitActionBarWhenNarrow" />		
 		    

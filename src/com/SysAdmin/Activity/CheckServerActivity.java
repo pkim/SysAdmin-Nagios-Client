@@ -29,14 +29,14 @@ import android.widget.TextView;
  * @version 0.2, 22/02/2012
  * @since 0.1
  */
-public class CheckServer extends Activity {
+public class CheckServerActivity extends Activity {
 	
 	// Objects
 	private EventListener_Server mEventListener_Configuration_Server = null;
 	private Integer mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	
 	// Constructor
-	public CheckServer()
+	public CheckServerActivity()
 	{
 		super();
 	}
@@ -100,7 +100,7 @@ public class CheckServer extends Activity {
 	    	// start the next activity
 	        case R.id.menuItemNext:
 	        	this.writeFile();
-	        	Intent intent = new Intent(this, Conclusion.class);
+	        	Intent intent = new Intent(this, ConclusionActivity.class);
 //				Intent intent = new Intent(this.configure, WidgetConfigure_Filter.class);
 				
 				this.startActivityForResult(intent, AppFacade.GetConfigureRequestCode());

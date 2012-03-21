@@ -7,7 +7,7 @@ import org.apache.http.util.ByteArrayBuffer;
 import com.SysAdmin.AppFacade;
 import com.SysAdmin.FilePathFacade;
 import com.SysAdmin.R;
-import com.SysAdmin.EventListener.EventListener_Configuration_Server;
+import com.SysAdmin.EventListener.EventListener_Server;
 // android
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -29,14 +29,14 @@ import android.widget.TextView;
  * @version 0.2, 22/02/2012
  * @since 0.1
  */
-public class WidgetConfigure_Server extends Activity {
+public class CheckServer extends Activity {
 	
 	// Objects
-	private EventListener_Configuration_Server mEventListener_Configuration_Server = null;
+	private EventListener_Server mEventListener_Configuration_Server = null;
 	private Integer mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	
 	// Constructor
-	public WidgetConfigure_Server()
+	public CheckServer()
 	{
 		super();
 	}
@@ -63,7 +63,7 @@ public class WidgetConfigure_Server extends Activity {
 	private void initializeObjects()
 	{
 		// set events
-		this.mEventListener_Configuration_Server = new EventListener_Configuration_Server(this);
+		this.mEventListener_Configuration_Server = new EventListener_Server(this);
 		this.mEventListener_Configuration_Server.setEvents();
 	}
 	
@@ -100,7 +100,7 @@ public class WidgetConfigure_Server extends Activity {
 	    	// start the next activity
 	        case R.id.menuItemNext:
 	        	this.writeFile();
-	        	Intent intent = new Intent(this, WidgetConfigure_Conclusion.class);
+	        	Intent intent = new Intent(this, Conclusion.class);
 //				Intent intent = new Intent(this.configure, WidgetConfigure_Filter.class);
 				
 				this.startActivityForResult(intent, AppFacade.GetConfigureRequestCode());

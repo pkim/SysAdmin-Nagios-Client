@@ -1,20 +1,20 @@
 package com.SysAdmin.EventListener;
 
 
-import com.SysAdmin.Activity.WidgetConfigure_Conclusion;
+import com.SysAdmin.Activity.Conclusion;
 
 /**
  * @author Lukas Bernreiter
  * @version 0.2, 22/02/2012
  * @since 0.2
  */
-public class EventListener_Configuration_Conclusion 
+public class EventListener_Conclusion 
 {
 	// Objects
-	private WidgetConfigure_Conclusion conclusion = null;
+	private Conclusion conclusion = null;
 	
 	// Constructor
-	public EventListener_Configuration_Conclusion(WidgetConfigure_Conclusion _conclusion)
+	public EventListener_Conclusion(Conclusion _conclusion)
 	{
 		this.conclusion = _conclusion;
 	}

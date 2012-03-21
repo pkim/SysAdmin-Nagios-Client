@@ -9,6 +9,7 @@ import com.SysAdmin.EventListener.EventListener_LoadWidget;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 
 /**
@@ -21,6 +22,7 @@ import android.widget.ArrayAdapter;
 public class LoadWidgetActivity extends ListActivity 
 {
 	private EventListener_LoadWidget mEventListener_LoadWidget = null; 
+	private TextView mTextView = null;
 	
 	/** Called when the activity is first created. */
 	protected void onCreate(Bundle _icicle)
@@ -37,7 +39,10 @@ public class LoadWidgetActivity extends ListActivity
 		this.mEventListener_LoadWidget = new EventListener_LoadWidget(this);
 		this.mEventListener_LoadWidget.setEvents();
 		
-		this.getListView().setEmptyView(this.getListView().findViewById(R.id.empty_view));
+		this.mTextView = new TextView(this);
+		this.mTextView.setText(R.string.empty);
+		
+		this.getListView().setTextFilterEnabled(true);
 	}
 	
 	private void fillListView()
@@ -54,7 +59,7 @@ public class LoadWidgetActivity extends ListActivity
 		File[] files = savedWidgets.listFiles();
 		
 		if(null == files)
-			return new String[]{""};
+			return new String[]{"No Items Found"};
 		
 		String[] widgetNames = new String[files.length];
 		int i = 0;

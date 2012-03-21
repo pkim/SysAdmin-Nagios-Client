@@ -16,10 +16,18 @@ public abstract class FilePathFacade
 	private static final String SUBDIRECTORY_SAVED = "Saved/";			
 	private static final String FILE_TEMP = "temp.xml";
 	
+	/**
+	 * Retrieves the path to the temp file
+	 * @return the path
+	 */
 	public static String GetTempFile(){
 		return SD+ROOTDIRECTORY_WORKING+FILE_TEMP;
 	}
 	
+	/**
+	 * Retrieves the path to the save sub directory. 
+	 * @return the path
+	 */
 	public static String GetSavedDirectory(){
 		return SD+ROOTDIRECTORY_WORKING+SUBDIRECTORY_SAVED;
 	}

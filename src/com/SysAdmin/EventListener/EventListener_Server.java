@@ -18,7 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 // com.SysAdmin
 import com.SysAdmin.AppFacade;
-import com.SysAdmin.Activity.WidgetConfigure_Server;
+import com.SysAdmin.Activity.CheckServerActivity;
 
 /**
  * Event listener for the configuration activity.
@@ -28,10 +28,10 @@ import com.SysAdmin.Activity.WidgetConfigure_Server;
  * @version 0., 14/03/2012
  * @since 0.1
  */
-public class EventListener_Configuration_Server implements OnClickListener, Runnable {
+public class EventListener_Server implements OnClickListener, Runnable {
 
 	// Objects
-	private WidgetConfigure_Server mConfigure = null;
+	private CheckServerActivity mConfigure = null;
 	private ByteArrayBuffer mByteArrayBuffer  = null;
 	private ProgressDialog mProgressDialog 	  = null;
 	private Boolean mFailure 				  = false;
@@ -40,14 +40,14 @@ public class EventListener_Configuration_Server implements OnClickListener, Runn
 	/**
 	 * Default Constructor
 	 */
-	public EventListener_Configuration_Server(){this(null);} 
+	public EventListener_Server(){this(null);} 
 	
 	/**
 	 * Constructor, stores the instance of the configure activity.
 	 * 
 	 * @param _configure The instance.
 	 */
-	public EventListener_Configuration_Server(WidgetConfigure_Server _configure)
+	public EventListener_Server(CheckServerActivity _configure)
 	{	
 		if(null != _configure)
 			this.mConfigure = _configure;

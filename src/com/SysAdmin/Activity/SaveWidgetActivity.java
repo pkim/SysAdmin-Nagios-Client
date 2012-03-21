@@ -9,7 +9,7 @@ import android.os.Bundle;
  * @version 0.2, 22/02/2012
  * @since 0.2 
  */
-public class WidgetConfigure_Save_Widget extends ListActivity 
+public class SaveWidgetActivity extends ListActivity 
 {
 	
 	/** Called when the activity is first created. */

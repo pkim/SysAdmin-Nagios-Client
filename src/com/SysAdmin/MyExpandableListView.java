@@ -13,6 +13,13 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 
+/**
+ * Expandable listView
+ * 
+ * @author Markus Hinterleitner
+ * @version 0.4, 21/03/2012
+ * @since 0.3
+ */
 public class MyExpandableListView implements OnClickListener
 {
 	
@@ -86,16 +93,16 @@ public class MyExpandableListView implements OnClickListener
 		             childData.add(children);
 		         }
 		         
-		         //Create a new adapter for the expandable listview
+		         //Create a new adapter for the expandable listView
 			     mAdapter = new SimpleExpandableListAdapter(
-			             context,													//context
-			             groupData,												//group data
-			             R.layout.my_expandable_list_group,		//group layout
-			             new String[] {GROUPNAME},								//key to map group content
+			             context,							// context
+			             groupData,							// group data
+			             R.layout.exp_list_group,			// group layout
+			             new String[] {GROUPNAME},			// key to map group content
 			             new int[] { R.id.textGroupItem},
-			             childData,												//child data
-			             R.layout.my_expandable_list_child,		//child layout
-			             new String[] {CHILDNAME},					//keys to map child content
+			             childData,							// child data
+			             R.layout.exp_list_child,			// child layout
+			             new String[] {CHILDNAME},			// keys to map child content
 			             new int[] {R.id.textChildItem}
 			             );
 			     

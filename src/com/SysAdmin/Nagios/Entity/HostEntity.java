@@ -1,15 +1,11 @@
-package com.SysAdmin.Entity;
+package com.SysAdmin.Nagios.Entity;
 
 import java.util.List;
 
-import com.SysAdmin.Nagios.NagiosServiceState;
-
 public class HostEntity {
 	
-	public static final Integer ATTRIBUTECOUNT = 3;
-	
 	private String hostName;	
-	private NagiosServiceState currentState;
+	private Integer currentState;
 	private List<ServiceEntity> services;
 	
 	/**
@@ -22,10 +18,10 @@ public class HostEntity {
 	 * The constructor to create a HostEntity pre-configured with all available properties.
 	 * 
 	 * @param _hostName 	The name of the host	
-	 * @param _currentState The state of the host ( see: http://nagios.sourceforge.net/docs/3_0/pluginapi.html );
+	 * @param _currentState The state of the host
 	 * @param _services		All services of the host
 	 */
-	public HostEntity(String _hostName, NagiosServiceState _currentState, List<ServiceEntity> _services)
+	public HostEntity(String _hostName, Integer _currentState, List<ServiceEntity> _services)
 	{
 		this.hostName     = _hostName;
 		this.currentState = _currentState;
@@ -47,12 +43,12 @@ public class HostEntity {
 		this.hostName = _hostName;
 	}
 	
-	public NagiosServiceState getCurrentState()
+	public Integer getCurrentState()
 	{
 		return currentState;
 	}
 	
-	public void setCurrentState(NagiosServiceState _state)
+	public void setCurrentState(Integer _state)
 	{
 		this.currentState = _state;
 	}

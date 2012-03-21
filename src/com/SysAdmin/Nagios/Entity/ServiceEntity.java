@@ -1,20 +1,13 @@
-package com.SysAdmin.Entity;
-
-import com.SysAdmin.Nagios.NagiosServiceState;
+package com.SysAdmin.Nagios.Entity;
 
 public class ServiceEntity {
-	
-	public static final Integer ATTRIBUTECOUNT = 4;
 	
 	private String hostName;
 	private String serviceDescription;
 	private String pluginOutput;
-	private NagiosServiceState currentState;
+	private Integer currentState;
 	
-	public ServiceEntity()
-	{}
-	
-	public ServiceEntity(String _hostName, String _serviceDescription, String _pluginOutput, NagiosServiceState _state)
+	public ServiceEntity(String _hostName, String _serviceDescription, String _pluginOutput, Integer _state)
 	{
 		this.setHostName(_hostName);
 		this.setServiceDescription(_serviceDescription);
@@ -46,11 +39,11 @@ public class ServiceEntity {
 		this.pluginOutput = _pluginOutput;
 	}
 	
-	public NagiosServiceState getCurrentState(){
+	public Integer getCurrentState(){
 		return currentState;
 	}
 	
-	public void setCurrentState(NagiosServiceState _state){
+	public void setCurrentState(Integer _state){
 		this.currentState = _state;
 	}
 }

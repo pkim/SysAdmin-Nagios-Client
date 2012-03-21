@@ -9,9 +9,11 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 /**
+ * Provides a cursor containing the displaying items
  * 
- * @author bernreiter
- *
+ * @author Lukas Bernreiter
+ * @version 0.4, 21/03/2012
+ * @since 0.3
  */
 public class UpdateService extends RemoteViewsService 
 {

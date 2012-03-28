@@ -6,7 +6,7 @@ import android.os.Environment;
  * Provides methods to access common file path variables.
  * 
  * @author Lukas Bernreiter
- * @version 0.3, 14/03/2012
+ * @version 0.5, 14/03/2012
  * @since 0.3
  */
 public abstract class FilePathFacade 

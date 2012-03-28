@@ -16,7 +16,7 @@ import android.widget.TextView;
  * Displays a list of saved files.
  * 
  * @author Lukas Bernreiter
- * @version 0.3, 14/03/2012
+ * @version 0.5, 14/03/2012
  * @since 0.3
  */
 public class LoadWidgetActivity extends ListActivity 

@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 /**
  * @author Lukas Bernreiter
- * @version 0.2, 22/02/2012
+ * @version 0.5, 22/02/2012
  * @since 0.2 
  */
 public class SaveWidgetActivity extends ListActivity 
@@ -17,7 +17,7 @@ public class SaveWidgetActivity extends ListActivity
 	{
 		super.onCreate(_icicle);
 		
-		// initialize every object 
+		// Initialize every object 
 		this.initializeObjects();
 	}
 	

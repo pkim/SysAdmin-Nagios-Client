@@ -25,7 +25,7 @@ import com.SysAdmin.Activity.CheckServerActivity;
  * Contains and handles every event of the configuration activity.
  * 
  * @author Lukas Bernreiter
- * @version 0., 14/03/2012
+ * @version 0.5, 14/03/2012
  * @since 0.1
  */
 public class EventListener_Server implements OnClickListener, Runnable {

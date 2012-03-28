@@ -7,7 +7,7 @@ import android.os.Environment;
  * Provides methods to access to common variables.
  * 
  * @author Lukas Bernreiter
- * @version 0.2, 22/02/2012S
+ * @version 0.5, 22/02/2012S
  * @since 0.1
  */
 public class AppFacade 

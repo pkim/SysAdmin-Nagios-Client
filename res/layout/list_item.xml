@@ -4,4 +4,5 @@
     style="@android:style/TextAppearance.Widget.TextView" 
 	android:id="@+id/textView_list"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"  />
+	android:layout_height="fill_parent" 
+	android:background="?android:attr/activatedBackgroundIndicator" />

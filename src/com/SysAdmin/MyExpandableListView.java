@@ -17,7 +17,7 @@ import android.widget.SimpleExpandableListAdapter;
  * Expandable listView
  * 
  * @author Markus Hinterleitner
- * @version 0.4, 21/03/2012
+ * @version 0.5, 21/03/2012
  * @since 0.3
  */
 public class MyExpandableListView implements OnClickListener

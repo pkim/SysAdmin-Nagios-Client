@@ -26,7 +26,7 @@ import android.widget.TextView;
 /**
  * @author Lukas Bernreiter
  * @author Thomas Weber
- * @version 0.2, 22/02/2012
+ * @version 0.5, 22/02/2012
  * @since 0.1
  */
 public class CheckServerActivity extends Activity {
@@ -100,8 +100,7 @@ public class CheckServerActivity extends Activity {
 	    	// start the next activity
 	        case R.id.menuItemNext:
 	        	this.writeFile();
-	        	Intent intent = new Intent(this, ConclusionActivity.class);
-//				Intent intent = new Intent(this.configure, WidgetConfigure_Filter.class);
+	        	Intent intent = new Intent(this, FilterActivity.class);
 				
 				this.startActivityForResult(intent, AppFacade.GetConfigureRequestCode());
 	            break;

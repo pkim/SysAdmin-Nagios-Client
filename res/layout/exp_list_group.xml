@@ -6,4 +6,4 @@
     android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft" 
     android:textAppearance="?android:attr/textAppearanceLarge" 
     android:gravity="center_vertical"
-    android:textColor="@android:color/black"/>
+    android:textColor="@android:color/holo_blue_light" />

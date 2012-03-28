@@ -14,7 +14,7 @@ import android.widget.RemoteViews;
  * Broadcast receiver, receives intent concerning the widget.
  * 
  * @author Lukas Bernreiter
- * @version 0.3, 14/03/2012
+ * @version 0.5, 14/03/2012
  * @since 0.1
  */
 public class SysAdminWidgetProvider extends AppWidgetProvider {

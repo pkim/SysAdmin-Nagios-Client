@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_widget_relative"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent" >
+	
+	<TextView style="@android:style/TextAppearance.Holo.Medium"
+	    android:padding="10dp"
+	    android:layout_alignParentTop="true"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/textView_Conclusion_Hostname"/>
+	
+	<TextView style="@android:style/TextAppearance.Holo.Medium"
+	    android:paddingLeft="10dp"
+	    android:paddingTop="10dp"
+	    android:paddingRight="10dp"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/textView_Conclusion_Hostname"
+	    android:id="@+id/textView_Conclusion_Filter" 
+	    android:text="@string/textView_Conclusion_Filter" />
+	
+	<ListView 
+	    android:id="@+id/listView_Conclusion_Filter"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_below="@id/textView_Conclusion_Filter"
+	    android:padding="15dp" />	
     
-        <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-    
-</LinearLayout>
+</RelativeLayout>

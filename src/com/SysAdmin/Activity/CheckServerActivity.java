@@ -8,6 +8,8 @@ import com.SysAdmin.AppFacade;
 import com.SysAdmin.FilePathFacade;
 import com.SysAdmin.R;
 import com.SysAdmin.EventListener.EventListener_Server;
+import com.SysAdmin.Nagios.XMLParser;
+import com.SysAdmin.Nagios.Entity.NagiosEntity;
 // android
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -97,9 +99,23 @@ public class CheckServerActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem _item)
 	{
 	    switch (_item.getItemId()) {
+	    	
 	    	// start the next activity
 	        case R.id.menuItemNext:
-	        	this.writeFile();
+	        	
+	        	//this.writeFile();
+	        	
+	        	try 
+	        	{
+	        		NagiosEntity nagiosEntity = XMLParser.parce(FilePathFacade.GetTempFile());
+	        	}
+	        	
+	        	catch (Exception e) 
+	        	{
+	        		// TODO Auto-generated catch block
+	        		Log.e(AppFacade.GetTag(), "Unable to parse xml file 2");
+	        	}
+	        	
 	        	Intent intent = new Intent(this, ConclusionActivity.class);
 //				Intent intent = new Intent(this.configure, WidgetConfigure_Filter.class);
 				

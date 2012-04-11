@@ -17,14 +17,14 @@ public class NagiosXMLNode
 	 * Host Attributes
 	 */
 	public static final String NODE_HOST_ATTRIBUTE_HOSTNAME      = "host_name";
-	public static final String NODE_HOST_ATTRIBUTE_CURRENT_STATE = "current_stat";
+	public static final String NODE_HOST_ATTRIBUTE_CURRENT_STATE = "current_state";
 	
 	
 	/**
 	 * Service Attributes
 	 */
 	public static final String NODE_SERVICE_ATTRIBUTE_HOSTNAME  			= "host_name";
-	public static final String NODE_SERVICE_ATTRIBUTE_SERVICE_DESCRIPTION  	= "service_attribute";
+	public static final String NODE_SERVICE_ATTRIBUTE_SERVICE_DESCRIPTION  	= "service_description";
 	public static final String NODE_SERVICE_ATTRIBUTE_PLUGIN_OUTPUT	      	= "plugin_output";
 	public static final String NODE_SERVICE_ATTRIBUTE_CURRENT_STATE			= "current_state";
 	
@@ -32,9 +32,9 @@ public class NagiosXMLNode
 	/**
 	 * ID of the subnodes of the root node "nagios_status"
 	 */
-	public static final Integer Node_ID_PROGRAMMSTATUS = 0;
-	public static final Integer NODE_ID_HOSTS          = 1;
-	public static final Integer NODE_ID_SERVICES 	   = 2;
+	public static final Integer Node_ID_PROGRAMMSTATUS = 1;
+	public static final Integer NODE_ID_HOSTS          = 3;
+	public static final Integer NODE_ID_SERVICES 	   = 5;
 	
 	
 	

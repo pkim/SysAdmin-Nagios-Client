@@ -16,9 +16,9 @@ import org.xml.sax.SAXException;
 import android.util.Log;
 
 import com.SysAdmin.AppFacade;
-import com.SysAdmin.Entity.HostEntity;
-import com.SysAdmin.Entity.NagiosEntity;
-import com.SysAdmin.Entity.ServiceEntity;
+import com.SysAdmin.Nagios.Entity.HostEntity;
+import com.SysAdmin.Nagios.Entity.NagiosEntity;
+import com.SysAdmin.Nagios.Entity.ServiceEntity;
 
 public class XMLParser {
 	
@@ -38,20 +38,24 @@ public class XMLParser {
 			// Document XML
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder        builder = factory.newDocumentBuilder();
-			Document               dom 	   = builder.parse(new File(_xmlFile));
+			Document               doc 	   = builder.parse(new File(_xmlFile));
+			
+			doc.getDocumentElement().normalize();
 			
 			// XML Nodes
-			Element  root  = dom.getDocumentElement();									// XML Root
-			NodeList node_root = root.getElementsByTagName(NagiosXMLNode.NODE_ROOT);	// subNodes
+			Element  root  	   = doc.getDocumentElement();								// XML Root
+			//NodeList node_root = root.getElementsByTagName(NagiosXMLNode.NODE_ROOT);	// subNodes
+			NodeList nodeList_hosts    = doc.getElementsByTagName(NagiosXMLNode.NODE_HOST);
+			NodeList nodeList_services = doc.getElementsByTagName(NagiosXMLNode.NODE_SERVICE);
 			
-			Node node_hosts    = node_root.item(NagiosXMLNode.NODE_ID_HOSTS);
-			Node node_services = node_root.item(NagiosXMLNode.NODE_ID_SERVICES);
+			//Node node_hosts    = node_root.item(NagiosXMLNode.NODE_ID_HOSTS);
+			//Node node_services = node_root.item(NagiosXMLNode.NODE_ID_SERVICES);
 			
 			// parse services
-			nagiosEntity.setServices(parseServices(node_services));
+			nagiosEntity.setServices(parseServices(nodeList_services));
 			
 			// parse hosts
-			nagiosEntity.setHosts   (parseHosts(node_hosts));
+			nagiosEntity.setHosts   (parseHosts(nodeList_hosts));
 		
 		}
 		
@@ -61,21 +65,25 @@ public class XMLParser {
 		return nagiosEntity;
 	}
 	
-	private static HostEntity[] parseHosts(Node _nodeHosts)
+	private static HostEntity[] parseHosts(NodeList _nodeList_Hosts)
 	{
-		NodeList hosts	    = _nodeHosts.getChildNodes();
-		Integer  hostsCount = hosts.getLength();
+		if(_nodeList_Hosts == null)
+			throw new NullPointerException("The value of _nodeList_Services has been null");
+		
+		Integer  hostsCount = _nodeList_Hosts.getLength();
 		
 		HostEntity[] hostEntities = new HostEntity[hostsCount];
 		
 		// get sub nodes
 		for(int i=0; i < hostsCount; i++)
 		{
-			hostEntities[i] = parseHost(hosts.item(i));
+			Node node_host  = _nodeList_Hosts.item(i);
+			hostEntities[i] = parseHost(node_host);
 		}
 		
 		return hostEntities;
 	}
+	
 	
 	private static HostEntity parseHost(Node _nodeHost)
 	{
@@ -86,17 +94,18 @@ public class XMLParser {
 		
 		Integer checkedAttributes = 0;
 		
-		//
-		for( int i=0; i < hostAttributesCount; i++)
+		for( int i=1; i < hostAttributesCount; i+=2)
 		{
 			Node   hostAttribute  = hostAttributes.item(i);
 			String attributeName  = hostAttribute.getNodeName();
-			String attributeValue = hostAttribute.getNodeValue();
+			String attributeValue = hostAttribute.getTextContent();
 			
 			// HOSTNAME
 			if(attributeName.equalsIgnoreCase(NagiosXMLNode.NODE_HOST_ATTRIBUTE_HOSTNAME))
 			{
-				if(hostEntity.getHostName().isEmpty())
+				String hostName = hostEntity.getHostName();
+				
+				if(hostName != null && hostName.isEmpty())
 				{
 					hostEntity.setHostName(attributeValue);
 					checkedAttributes++;
@@ -134,7 +143,7 @@ public class XMLParser {
 			}
 			
 			// Check if all needed attributes are parsed
-			if ( HostEntity.ATTRIBUTECOUNT >= checkedAttributes)
+			if ( HostEntity.ATTRIBUTECOUNT <= checkedAttributes)
 			{
 				// break the for-loop because all needed attributes are dedected
 				i = hostAttributesCount;
@@ -147,30 +156,40 @@ public class XMLParser {
 		
 		for (ServiceEntity serviceEntity: services)
 		{
-			if(serviceEntity.getHostName() == hostEntity.getHostName())
+			if(serviceEntity.getHostName().equals(hostEntity.getHostName()))
 			{
 				hostEntity.AddService(serviceEntity);
 			}
 		}
 		
-		
 		return hostEntity;
 	}
 	
 	
-	private static ServiceEntity[] parseServices(Node _nodeServices)
+	private static ServiceEntity[] parseServices(NodeList _nodeList_Services)
 	{
-		NodeList services 	   = _nodeServices.getChildNodes();
-		Integer  servicesCount = services.getLength();
+		
+		if(_nodeList_Services == null)
+			throw new NullPointerException("The value of _nodeList_Services has been null");
+		
+		Integer  servicesCount = _nodeList_Services.getLength();
 		
 		ServiceEntity[] serviceEntities = new ServiceEntity[servicesCount];
 		
+		for(int i=0; i < servicesCount; i++)
+		{
+			Node node_Service = _nodeList_Services.item(i);
+			
+			serviceEntities[i] = parseService(node_Service);
+		}
+		
+		/*
 		// get sub nodes
 		for(int i=0; i < servicesCount; i++)
 		{
 			serviceEntities[i] = parseService(services.item(i));
 		}
-		
+		*/
 		return serviceEntities;
 	}
 	
@@ -178,22 +197,26 @@ public class XMLParser {
 	{
 		ServiceEntity serviceEntity = new ServiceEntity();
 		
-		NodeList hostAttributes 	 = _nodeService.getChildNodes();
-		Integer  hostAttributesCount = hostAttributes.getLength();
+		NodeList serviceAttributes 	    = _nodeService.getChildNodes();
+		Integer  serviceAttributesCount = serviceAttributes.getLength();
 		
 		Integer checkedAttributes = 0;
 		
 		//
-		for( int i=0; i < hostAttributesCount; i++)
+		for( int i=1; i < serviceAttributesCount; i+=2)
 		{
-			Node   serviceAttribute  = hostAttributes.item(i);
-			String attributeName  = serviceAttribute.getNodeName();
-			String attributeValue = serviceAttribute.getNodeValue();
+			Node   serviceAttribute  = serviceAttributes.item(i);
+			String attributeName  	 = serviceAttribute.getNodeName();
+			String attributeValue 	 = serviceAttribute.getTextContent();//serviceAttribute.getNodeValue();
 			
 			// HOSTNAME
 			if(attributeName.equalsIgnoreCase(NagiosXMLNode.NODE_SERVICE_ATTRIBUTE_HOSTNAME))
 			{
-				if(serviceEntity.getHostName().isEmpty())
+				String hostNameOfService = serviceEntity.getHostName();
+				
+				if(		hostNameOfService != null
+					&&  hostNameOfService.isEmpty() 
+					&& 	attributeValue != null)
 				{
 					serviceEntity.setHostName(attributeValue);
 					checkedAttributes++;
@@ -238,17 +261,17 @@ public class XMLParser {
 					Log.e(AppFacade.GetTag(), String.format("Coudn't convert %s to an integer while parsing the nagios xml file", attributeValue)); 
 					
 					// break the for-loop because all needed attributes are dedected
-					i = hostAttributesCount;
+					i = serviceAttributesCount;
 				}
 				
 			}
 			 
 			// Check if all needed attributes are parsed
 			// -1 because the services of the host will be setted later
-			if ( ServiceEntity.ATTRIBUTECOUNT-1>= checkedAttributes)
+			if ( ServiceEntity.ATTRIBUTECOUNT <= checkedAttributes)
 			{
 				// break the for-loop because all needed attributes are dedected
-				i = hostAttributesCount;
+				i = serviceAttributesCount;
 			}
 			
 		}

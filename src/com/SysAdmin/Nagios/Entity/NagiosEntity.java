@@ -3,18 +3,19 @@ package com.SysAdmin.Nagios.Entity;
 import java.util.List;
 
 public class NagiosEntity {
+	
 	private String name;
 	private String url;
-	private List<HostEntity> hostList;
+	private HostEntity[] 	hosts;
+	private ServiceEntity[] services;
 	
-	public NagiosEntity(String _name, String _url, List<HostEntity> _hostList){
+	public NagiosEntity()
+	{}
+	
+	public NagiosEntity(String _name, String _url, HostEntity[] _hostList){
 		this.setName(_name);
 		this.setUrl(_url);
-		this.setHostList(_hostList);
-	}
-	
-	public void AddHostList(HostEntity _newHost){
-		this.hostList.add(_newHost);
+		this.setHosts(_hostList);
 	}
 	
 	public String getName(){
@@ -31,10 +32,20 @@ public class NagiosEntity {
 		this.url = _url;
 	}
 	
-	public List<HostEntity> getHostList(){
-		return hostList;
+	public HostEntity[] getHosts(){
+		return hosts;
 	}
-	public void setHostList(List<HostEntity> _hostList){
-		this.hostList = _hostList;
+	public void setHosts(HostEntity[] hostEntities){
+		this.hosts = hostEntities;
 	}
+
+	public ServiceEntity[] getServices() {
+		return services;
+	}
+
+	public void setServices(ServiceEntity[] services) {
+		this.services = services;
+	}
+	
+	
 }

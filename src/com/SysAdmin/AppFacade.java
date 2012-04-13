@@ -1,5 +1,7 @@
 package com.SysAdmin;	
 
+import com.SysAdmin.Nagios.Entity.NagiosEntity;
+
 import android.appwidget.AppWidgetManager;
 import android.os.Environment;
 
@@ -7,7 +9,7 @@ import android.os.Environment;
  * Provides methods to access to common variables.
  * 
  * @author Lukas Bernreiter
- * @version 0.5, 22/02/2012S
+ * @version 0.6, 22/02/2012S
  * @since 0.1
  */
 public class AppFacade 
@@ -22,7 +24,9 @@ public class AppFacade
 	private static final String SD 				  = Environment.getExternalStorageState();
 	private static final String FILENAME = "Widgets.xml";
 	private static final String XML_FILE = SD + "/SysAdmin/" + FILENAME;
+	
 	private static Integer ConfigureRequestCode = 0;
+	private static NagiosEntity NAGIOS_ENTITY = null;
 	
 	/** 
 	 * Returns the tag used by the application for logging 
@@ -89,8 +93,26 @@ public class AppFacade
 	
 	/**
 	 * Retrieves the request code.
-	 * @return the request code.
+	 * @return The request code.
 	 */
 	public static Integer GetConfigureRequestCode(){return ConfigureRequestCode;}
+	
+	/**
+	 * Returns the current Nagios entity. 
+	 * @return The current entity.
+	 */
+	public static NagiosEntity GetCurrentEntity()
+	{
+		return NAGIOS_ENTITY;
+	}
+	
+	/**
+	 * Sets the current Nagios entity
+	 * @param _entity The current entity.
+	 */
+	public static void SetCurrentEntity(NagiosEntity _entity)
+	{
+		NAGIOS_ENTITY = _entity;
+	}
 	
 }

@@ -36,6 +36,7 @@ public class CheckServerActivity extends Activity {
 	// Objects
 	private EventListener_Server mEventListener_Configuration_Server = null;
 	private Integer mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+	private NagiosEntity mNagiosEntity = null;
 	
 	// Constructor
 	public CheckServerActivity()
@@ -103,21 +104,19 @@ public class CheckServerActivity extends Activity {
 	    	// start the next activity
 	        case R.id.menuItemNext:
 	        	
-	        	//this.writeFile();
-	        	
 	        	try 
 	        	{
-	        		NagiosEntity nagiosEntity = XMLParser.parce(FilePathFacade.GetTempFile());
+	        		this.mNagiosEntity = XMLParser.parce(FilePathFacade.GetTempFile());
 	        	}
 	        	
 	        	catch (Exception e) 
 	        	{
-	        		// TODO Auto-generated catch block
 	        		Log.e(AppFacade.GetTag(), "Unable to parse xml file 2");
 	        	}
 	        	
-	        	Intent intent = new Intent(this, ConclusionActivity.class);
-//				Intent intent = new Intent(this.configure, WidgetConfigure_Filter.class);
+	        	Intent intent = new Intent(this, FilterActivity.class);
+	        	
+	        	AppFacade.SetCurrentEntity(this.mNagiosEntity);
 				
 				this.startActivityForResult(intent, AppFacade.GetConfigureRequestCode());
 	            break;

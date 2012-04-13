@@ -1,7 +1,13 @@
 package com.SysAdmin.Nagios.Entity;
 
-import java.util.List;
 
+/**
+ * Defines the structure of an Nagios entity.
+ * 
+ * @author Patrik Kimmeswenger
+ * @version 0.6, 13/04/2012
+ * @since 0.6
+ */
 public class NagiosEntity {
 	
 	private String name;

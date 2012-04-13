@@ -14,7 +14,7 @@ public abstract class FilePathFacade
 	private static final String SD = Environment.getExternalStorageDirectory().getAbsolutePath();
 	private static final String ROOTDIRECTORY_WORKING = "/SysAdmin/";
 	private static final String SUBDIRECTORY_SAVED = "Saved/";			
-	private static final String FILE_TEMP = "temp.xml";
+	private static final String FILE_TEMP = "status.xml";
 	
 	/**
 	 * Retrieves the path to the temp file

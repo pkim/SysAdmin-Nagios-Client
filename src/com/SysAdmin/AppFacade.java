@@ -24,6 +24,7 @@ public class AppFacade
 	private static final String SD 				  = Environment.getExternalStorageState();
 	private static final String FILENAME = "Widgets.xml";
 	private static final String XML_FILE = SD + "/SysAdmin/" + FILENAME;
+	private static final String EX_SELECTED = "SelectedItems"; 
 	
 	private static Integer ConfigureRequestCode = 0;
 	private static NagiosEntity NAGIOS_ENTITY = null;
@@ -113,6 +114,13 @@ public class AppFacade
 	public static void SetCurrentEntity(NagiosEntity _entity)
 	{
 		NAGIOS_ENTITY = _entity;
+	}
+
+	/**
+	 * @return The extra name for the selected items.
+	 */
+	public static String GetExSelected() {
+		return EX_SELECTED;
 	}
 	
 }

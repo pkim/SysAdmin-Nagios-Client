@@ -2,14 +2,23 @@ package com.SysAdmin.Nagios.Entity;
 
 import com.SysAdmin.Nagios.NagiosServiceState;
 
+/**
+ * Describes the structure of a service entity.
+ * 
+ * @author Lukas Bernreiter
+ * @author Patrik Kimmeswenger
+ * @version 0.7, 16/04/2012
+ * @since 0.6
+ */
 public class ServiceEntity {
 	
 	public static final Integer ATTRIBUTECOUNT = 4;
 	
-	private String hostName;
-	private String serviceDescription;
-	private String pluginOutput;
-	private NagiosServiceState currentState;
+	private String hostName = new String();
+	private String serviceDescription = new String();
+	private String pluginOutput = new String();
+	private NagiosServiceState currentState = null;
+	private Boolean mChecked = false;
 	
 	public ServiceEntity()
 	{
@@ -57,5 +66,13 @@ public class ServiceEntity {
 	
 	public void setCurrentState(NagiosServiceState _state){
 		this.currentState = _state;
+	}
+	
+	public Boolean isChecked() {
+		return this.mChecked;
+	}
+	
+	public void check(Boolean _checked) {
+		this.mChecked = _checked;
 	}
 }

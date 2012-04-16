@@ -2,6 +2,7 @@ package com.SysAdmin.Activity;
 
 
 // com.SysAdmin
+import com.SysAdmin.AppFacade;
 import com.SysAdmin.R;
 import com.SysAdmin.EventListener.EventListener_Conclusion;
 // android
@@ -45,25 +46,20 @@ public class ConclusionActivity extends Activity
 		this.mListView = (ListView)this.findViewById(R.id.listView_Conclusion_Filter);
 		this.mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		
-		ArrayAdapter<String> dataSource = new ArrayAdapter<String>(this,R.layout.list_item, R.id.textView_list,	this.testFunc());
+		ArrayAdapter<String> dataSource = new ArrayAdapter<String>(this,R.layout.list_item, R.id.textView_list,	this.getExSelected());
 		this.mListView.setAdapter(dataSource);
 		
 		this.mEventListener_Conclusion = new EventListener_Conclusion(this);
 		this.mEventListener_Conclusion.setEvents();	
 	}
 
-	// TEST!!
-	private String[] testFunc()
-	{
-		String[] array = new String[5];
-		
-		array[0] = "asdf";
-		array[1] = "alskjdf";
-		array[2] = "slkdjf";
-		array[3] = "alksdjf";
-		array[4] = "fdas";
-		
-		return array;
+	private String[] getExSelected()
+	{	
+		try{		
+			return this.getIntent().getExtras().getStringArray(AppFacade.GetExSelected());
+		}catch (Exception e) {
+			return new String[]{""};
+		}
 	}
 	
 	private void setHostname(String _hostname)

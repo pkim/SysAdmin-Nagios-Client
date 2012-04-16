@@ -10,12 +10,12 @@ import com.SysAdmin.Nagios.Entity.HostEntity;
 import com.SysAdmin.Nagios.Entity.ServiceEntity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.CheckBox;
+import android.widget.CheckedTextView;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 
@@ -33,17 +33,18 @@ public class FilterActivity extends Activity
 	private String[] mGroups = null;
 	private String[][] mChilds = null;
 	private ExpandableListView mExpandableListView = null;
+	private String[] mSelected = null;
 	
 	/** Called when the activity is first created. */
 	protected void onCreate(Bundle _icicle)
 	{
 		super.onCreate(_icicle);
-		this.setContentView(R.layout.filter);
-		
-		this.initializeObjects();
+		this.setContentView(R.layout.filter);				
 		
 		if(null != AppFacade.GetCurrentEntity())
 			this.addExpandableListView();
+		
+		this.initializeObjects();
 	}
 	
 	private void initializeObjects()
@@ -86,11 +87,12 @@ public class FilterActivity extends Activity
 	
 	private void checkSelectedItems()
 	{
-		for(int i=0; i < this.mExpandableListView.getChildCount(); i++)
+		final int count = this.mExpandableListView.getChildCount(); 
+		this.mSelected = new String[count];
+		
+		for(int i=0; i < count; i++)
 		{
-			CheckBox checkBox = (CheckBox) this.mExpandableListView.getChildAt(i).findViewById(R.id.checkBox_ChildItem);
-			if(checkBox != null && checkBox.isChecked())
-				Log.d(AppFacade.GetTag(), ""+i);			
+			
 		}
 	}
 	
@@ -108,6 +110,10 @@ public class FilterActivity extends Activity
 	    
 	    case R.id.menuItemNext:
             this.checkSelectedItems();
+            this.mSelected = new String[]{"asdf","asdf"};
+            Intent intent = new Intent(this,ConclusionActivity.class);
+            intent.putExtra(AppFacade.GetExSelected(), this.mSelected);
+            this.startActivity(intent);
         	break;
 	    
 	    case R.id.menuItemLoad:
@@ -124,4 +130,7 @@ public class FilterActivity extends Activity
 	    
 	    return true;
 	}
+	
+	public ExpandableListView getExpListView(){return this.mExpandableListView;}
+	public CheckedTextView getChTxtView(){return (CheckedTextView) this.findViewById(R.id.checkedText_Child);}
 }

@@ -12,18 +12,15 @@ import com.SysAdmin.Nagios.Entity.ServiceEntity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 /**
  * Defines the filter activity. Adds the expandable listView to the layout.
@@ -91,6 +88,7 @@ public class FilterActivity extends Activity
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void checkSelectedItems()
 	{		
 		this.mSelected = new String[this.mExpandableListView.getCheckedItemCount()];			
@@ -124,7 +122,7 @@ public class FilterActivity extends Activity
             if(null != this.mSelected && 0 != this.mSelected.length)
             	intent.putExtra(AppFacade.GetExSelected(), this.mSelected);
             
-            this.startActivity(intent);
+            this.startActivityForResult(intent, AppFacade.GetConfigureRequestCode());
         	break;
 	    
 	    case R.id.menuItemLoad:
@@ -141,6 +139,15 @@ public class FilterActivity extends Activity
 	    
 	    return true;
 	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d(AppFacade.GetTag(), "Result received");
+		if (resultCode == RESULT_OK)
+			this.setResult(RESULT_OK);
+		else
+			this.setResult(RESULT_CANCELED);
+		this.finish();
+    }
 	
 	public ExpandableListView getExpListView(){return this.mExpandableListView;}
 	public CheckedTextView getChTxtView(){return (CheckedTextView) this.findViewById(R.id.checkedText_Child);}

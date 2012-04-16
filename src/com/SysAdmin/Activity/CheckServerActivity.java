@@ -126,6 +126,10 @@ public class CheckServerActivity extends Activity {
 	        	this.startActivity(loadIntent);
 	        	
 	        	break;
+	        
+	        case R.id.menuItemAbort:
+	        	this.finish();
+	        	break;
 	            
 	        default:
 	            return super.onOptionsItemSelected(_item);	            

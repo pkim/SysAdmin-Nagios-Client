@@ -87,6 +87,11 @@ public class ConclusionActivity extends Activity
 	        	this.setResult(RESULT_OK);
 	        	this.finish();
 	        	break;
+	        
+	        case R.id.menuItemAbort:
+	        	this.setResult(RESULT_CANCELED);
+	        	this.finish();
+	        	
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }

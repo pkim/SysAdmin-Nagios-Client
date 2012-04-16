@@ -1,5 +1,6 @@
 package com.SysAdmin.Activity;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.SysAdmin.AppFacade;
@@ -11,13 +12,18 @@ import com.SysAdmin.Nagios.Entity.ServiceEntity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * Defines the filter activity. Adds the expandable listView to the layout.
@@ -86,16 +92,19 @@ public class FilterActivity extends Activity
 	}
 	
 	private void checkSelectedItems()
-	{
-		final int count = this.mExpandableListView.getChildCount(); 
-		this.mSelected = new String[count];
+	{		
+		this.mSelected = new String[this.mExpandableListView.getCheckedItemCount()];			
 		
-		for(int i=0; i < count; i++)
+		SparseBooleanArray checkedPositions = this.mExpandableListView.getCheckedItemPositions();
+		for (int i = 0; i < checkedPositions.size(); i++)
 		{
-			
-		}
+			if(checkedPositions.valueAt(i))
+			{
+				this.mSelected[i] = ((HashMap<String, String>) this.mExpandableListView.getAdapter().getItem(checkedPositions.keyAt(i))).get("CHILDNAME");
+			}
+		}	
 	}
-	
+		
 	public boolean onCreateOptionsMenu(Menu _menu){
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_menu, _menu);
@@ -110,9 +119,11 @@ public class FilterActivity extends Activity
 	    
 	    case R.id.menuItemNext:
             this.checkSelectedItems();
-            this.mSelected = new String[]{"asdf","asdf"};
             Intent intent = new Intent(this,ConclusionActivity.class);
-            intent.putExtra(AppFacade.GetExSelected(), this.mSelected);
+            
+            if(null != this.mSelected && 0 != this.mSelected.length)
+            	intent.putExtra(AppFacade.GetExSelected(), this.mSelected);
+            
             this.startActivity(intent);
         	break;
 	    

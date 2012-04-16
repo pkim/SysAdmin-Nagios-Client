@@ -108,7 +108,7 @@ private static final String CHILDNAME = "CHILDNAME";
 	         );
 		 //Set adapter for the ExpandableListView
 		 expandableListView.setAdapter(mAdapter);		
-//		 expandableListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		 expandableListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
 		 expandableListView.setItemsCanFocus(false);
 	}
 

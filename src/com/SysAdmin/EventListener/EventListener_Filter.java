@@ -2,21 +2,18 @@ package com.SysAdmin.EventListener;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckedTextView;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
 import com.SysAdmin.AppFacade;
-import com.SysAdmin.R;
 import com.SysAdmin.Activity.FilterActivity;
 
 /**
  * Contains and handles every event of the filter activity.
  * 
  * @author Lukas Bernreiter
- * @version 0.5, 22/02/2012
+ * @version 0.7, 22/02/2012
  * @since 0.2
  */
 public class EventListener_Filter implements OnChildClickListener
@@ -35,15 +32,22 @@ public class EventListener_Filter implements OnChildClickListener
 
 	public boolean onChildClick(ExpandableListView _expListView, View _view, int _group, int _child, long _id)
 	{
-		Log.d(AppFacade.GetTag(), "CLICK");
-		
-//		CheckedTextView ckTextView = (CheckedTextView)_expListView.findViewById(R.id.checkedText_Child);
-
 		CheckedTextView ckTextView = (CheckedTextView)_view;
 		
 		ckTextView.setChecked(!ckTextView.isChecked());
 		
+		int position = this.getPosition(_group, _child);
+		
+		Log.d(AppFacade.GetTag(), ""+position);
+		
+		_expListView.setItemChecked(position, true);
+		
 		return true;
+	}
+	
+	private int getPosition(int _group, int _child)
+	{
+		return this.mFilter.getExpListView().getFlatListPosition(ExpandableListView.getPackedPositionForChild(_group, _child));
 	}
 
 }

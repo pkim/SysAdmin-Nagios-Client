@@ -117,6 +117,7 @@ public class CheckServerActivity extends Activity {
 	        	Intent intent = new Intent(this, FilterActivity.class);
 	        	
 	        	AppFacade.SetCurrentEntity(this.mNagiosEntity);
+	        	AppFacade.SetHostname(this.getHostName());
 				
 				this.startActivityForResult(intent, AppFacade.GetConfigureRequestCode());
 	            break;
@@ -199,4 +200,6 @@ public class CheckServerActivity extends Activity {
 			((TextView)this.findViewById(R.id.textView_Result)).setTextColor(Color.RED);
 		}
 	}
+	
+	private String getHostName(){return ((EditText)this.findViewById(R.id.editText_Host)).getText().toString();}
 }

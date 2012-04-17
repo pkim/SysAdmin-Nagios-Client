@@ -11,15 +11,18 @@ import flexjson.JSONSerializer;
 
 public class FilterList  
 {
+	private String hostName = new String();
+	private String url		= new String();
+	
 	private ArrayList<Filter> filters;
 	private JSONSerializer    mJSONSerializer;
-	private JSONDeserializer<ArrayList<Filter>>  mJSONDeserializer;
+	private JSONDeserializer<FilterList>  mJSONDeserializer;
 	
 	public FilterList()
 	{
 		this.filters = new ArrayList<Filter>();
 		this.mJSONSerializer   = new JSONSerializer();
-		this.mJSONDeserializer = new JSONDeserializer<ArrayList<Filter>>();
+		this.mJSONDeserializer = new JSONDeserializer<FilterList>();
 	}
 	
 	public FilterList(ArrayList<Filter> _filters) throws NullPointerException
@@ -59,9 +62,25 @@ public class FilterList
 		return this.filters.get(_position);
 	}
 	
+	public String getHostName() {
+		return hostName;
+	}
+
+	public void setHostName(String hostName) {
+		this.hostName = hostName;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
 	public void serialize(String _path) throws Exception
 	{
-		String jsonString = this.mJSONSerializer.serialize(this.filters);
+		String jsonString = this.mJSONSerializer.exclude("mJSONSerializer").exclude("mJSONDeserializer").include("filters").serialize(this);
 		
 		try 
 		{
@@ -81,7 +100,11 @@ public class FilterList
 		{
 			jsonString = FileHandler.read(_path);
 			
-			this.filters = this.mJSONDeserializer.deserialize(jsonString);
+			FilterList filterList = this.mJSONDeserializer.use( null, FilterList.class).deserialize(jsonString);
+			
+			this.hostName = filterList.getHostName();
+			this.url      = filterList.url;
+			this.filters  = filterList.getFilters();
 		} 
 		catch (Exception e) 
 		{
@@ -89,4 +112,6 @@ public class FilterList
 		}
 		
 	}
+
+
 }

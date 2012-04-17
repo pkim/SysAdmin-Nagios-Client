@@ -6,8 +6,11 @@ import org.apache.http.util.ByteArrayBuffer;
 
 import com.SysAdmin.AppFacade;
 import com.SysAdmin.FilePathFacade;
+import com.SysAdmin.MyExpandableListView;
 import com.SysAdmin.R;
 import com.SysAdmin.EventListener.EventListener_Server;
+import com.SysAdmin.FileDialog.FileDialog;
+import com.SysAdmin.Filter.Filter;
 import com.SysAdmin.Nagios.XMLParser;
 import com.SysAdmin.Nagios.Entity.NagiosEntity;
 // android
@@ -21,8 +24,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 /**
@@ -104,6 +110,9 @@ public class CheckServerActivity extends Activity {
 	    	// start the next activity
 	        case R.id.menuItemNext:
 	        	
+	        	AppFacade.getFilterList().setHostName(this.getHostName());
+	        	AppFacade.getFilterList().setUrl(this.getURL());
+	        	
 	        	try 
 	        	{
 	        		this.mNagiosEntity = XMLParser.parce(FilePathFacade.GetTempFile());
@@ -111,21 +120,19 @@ public class CheckServerActivity extends Activity {
 	        	
 	        	catch (Exception e) 
 	        	{
-	        		Log.e(AppFacade.GetTag(), "Unable to parse xml file 2");
+	        		Log.e(AppFacade.GetTag(), "Unable to parse xml file");
 	        	}
-	        	
-	        	Intent intent = new Intent(this, FilterActivity.class);
 	        	
 	        	AppFacade.SetCurrentEntity(this.mNagiosEntity);
 	        	AppFacade.SetHostname(this.getHostName());
-				
+	        	
+	        	Intent intent = new Intent(this, FilterActivity.class);
+	        					
 				this.startActivityForResult(intent, AppFacade.GetConfigureRequestCode());
 	            break;
 	            
 	        case R.id.menuItemLoad:
-	        	Intent loadIntent = new Intent(this, LoadWidgetActivity.class);
-	        	this.startActivity(loadIntent);
-	        	
+	        	this.loadFile();
 	        	break;
 	        
 	        case R.id.menuItemAbort:
@@ -155,7 +162,30 @@ public class CheckServerActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.d(AppFacade.GetTag(), "Result received");
 		if (resultCode == RESULT_OK)
-			this.createWidget();
+		{
+
+			if(requestCode == AppFacade.REQEUST_LOAD)
+			{
+				String path = data.getStringExtra(FileDialog.RESULT_PATH);
+
+				if(AppFacade.getFilterList() != null)
+				{
+					try {
+						AppFacade.getFilterList().deserialize(path);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+				this.setHostName(AppFacade.getFilterList().getHostName());
+				this.setUrl(AppFacade.getFilterList().getUrl());
+			}
+			
+			else
+				this.createWidget();
+			
+		}
     }
 	
 	private void createWidget()
@@ -202,4 +232,22 @@ public class CheckServerActivity extends Activity {
 	}
 	
 	private String getHostName(){return ((EditText)this.findViewById(R.id.editText_Host)).getText().toString();}
+	
+	private void setHostName(String _hostname){((EditText)this.findViewById(R.id.editText_Host)).setText(_hostname);}
+	
+	private void setUrl(String _url){((EditText)this.findViewById(R.id.EditTextUrl)).setText(_url);}
+	
+	private void loadFile()
+	{
+		Intent intent = new Intent(getBaseContext(), FileDialog.class);
+        intent.putExtra(FileDialog.START_PATH, "/sdcard/SysAdmin");
+        
+        //can user select directories or not
+        intent.putExtra(FileDialog.CAN_SELECT_DIR, true);
+        
+        //alternatively you can set file filter
+        //intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "png" });
+        
+        startActivityForResult(intent, AppFacade.REQEUST_LOAD);
+	}
 }

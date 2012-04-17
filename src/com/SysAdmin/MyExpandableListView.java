@@ -153,8 +153,25 @@ public class MyExpandableListView implements OnClickListener
 	
     public static String getChild(int groupPosition, int childPosition) 
     {
-        return childNames[groupPosition][childPosition];
+    	if(groupPosition < groupNames.length && childPosition < childNames.length)
+    		return childNames[groupPosition][childPosition];
+    	
+    	return new String();
     }
+    
+    public static String getGroup(int groupPosition)
+    {
+    	if(groupPosition < groupNames.length)
+    		return groupNames[groupPosition];
+    	
+    	return new String();
+    }
+    
+    public static int getCountOfGroups()
+    { return groupNames.length; }
+    
+    public static int getCountOfChilds(int _group)
+    { return childNames[_group].length; }
     
 	public void onClick(View arg0) 
 	{

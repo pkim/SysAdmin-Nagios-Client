@@ -57,34 +57,6 @@ public class FilterActivity extends Activity
 			this.addExpandableListView();
 		
 		this.initializeObjects();
-		
-		
-		
-		
-		// set items
-		View convertView = null;
-		View view = null;
-		
-		for(int i = 0; i < 3; i++)
-		{ 
-			for(int j=0; j<5; j++)
-			{
-
-		 view = MyExpandableListView.getChildView(i, j, convertView);
-
-		if(view != null)
-		{
-			CheckedTextView test = (CheckedTextView) view.findViewById(R.id.checkedText_Child);
-			
-			if(test != null)
-				test.setChecked(true);
-			
-					
-		}
-		
-		
-			}
-		}
 	}
 	
 	private void initializeObjects()
@@ -104,6 +76,8 @@ public class FilterActivity extends Activity
 		
 		LinearLayout layout = (LinearLayout)this.findViewById(R.id.layout_Filter);
 		layout.addView(this.mExpandableListView);
+		
+		this.loadCheckedServices();
 	}
 	
 	private void fillData()
@@ -125,22 +99,6 @@ public class FilterActivity extends Activity
 		}
 	}
 	
-	/*
-	@SuppressWarnings("unchecked")
-	private void checkSelectedItems()
-	{		
-		this.mSelected = new String[this.mExpandableListView.getCheckedItemCount()];			
-		
-		SparseBooleanArray checkedPositions = this.mExpandableListView.getCheckedItemPositions();
-		for (int i = 0; i < checkedPositions.size(); i++)
-		{
-			if(checkedPositions.valueAt(i))
-			{
-				this.mSelected[i] = ((HashMap<String, String>) this.mExpandableListView.getAdapter().getItem(checkedPositions.keyAt(i))).get(MyExpandableListView.CHILDNAME);
-			}
-		}	
-	}*/
-		
 	public boolean onCreateOptionsMenu(Menu _menu){
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_menu, _menu);
@@ -204,32 +162,8 @@ public class FilterActivity extends Activity
 						e.printStackTrace();
 					}
 					
-					// set items
-					View convertView = null;
-					View view = null;
-					
-					for(int i = 0; i < 3; i++)
-					{ 
-						for(int j=0; j<5; j++)
-						{
-		
-					 view = MyExpandableListView.getChildView(i, j, convertView);
-		
-					if(view != null)
-					{
-						CheckedTextView test = (CheckedTextView) view.findViewById(R.id.checkedText_Child);
-						
-						if(test != null)
-							test.setChecked(true);
-						
-								
-					}
-					
-					
-						}
-					}
+					this.loadCheckedServices();
 				}
-				
 			}
 			
 			else
@@ -249,13 +183,55 @@ public class FilterActivity extends Activity
 		
     }
 	
+	private void loadCheckedServices()
+	{
+		// set items
+		View convertView = null;
+		View view = null;
+
+		int sizeOfHosts = AppFacade.getFilterList().getFilters().size();
+		
+		for(Filter filter: AppFacade.getFilterList().getFilters())
+		{
+			String hostName    = filter.getHostName();
+			String serviceName = filter.getServiceName();
+			
+			for(int i = 0; i < MyExpandableListView.getCountOfGroups(); i++)
+			{
+				if(!hostName.equals(MyExpandableListView.getGroup(i)))
+				{ continue; }
+				
+				for(int j=0; j < MyExpandableListView.getCountOfChilds(i); j++)
+				{
+					if(!serviceName.equals(MyExpandableListView.getChild(i, j)))
+					{ continue; }
+					
+					view = MyExpandableListView.getChildView(i, j, convertView);
+
+					if(view != null)
+					{
+						CheckedTextView checkedTextView = (CheckedTextView) view.findViewById(R.id.checkedText_Child);
+			
+						if(checkedTextView != null)
+						{
+							int position = this.mExpandableListView.getFlatListPosition(ExpandableListView.getPackedPositionForChild(i, j));
+							this.mExpandableListView.setItemChecked(position, true);
+						}									
+					}
+					
+					break;
+				}
+				
+				break;
+			}
+		}
+	}
+		
 	public ExpandableListView getExpListView(){return this.mExpandableListView;}
 	public CheckedTextView getChTxtView(){return (CheckedTextView) this.findViewById(R.id.checkedText_Child);}
 	
 	protected FilterList createFilterArray() throws Exception
 	{
-		FilterList filters = new FilterList();
-		
 		SparseBooleanArray checkedPositions = this.mExpandableListView.getCheckedItemPositions();
 		
 		String hostName    = new String();
@@ -280,24 +256,17 @@ public class FilterActivity extends Activity
 					throw new Exception("Couldn't determine a filter of a checked item");
 				
 				Filter filter = new Filter(hostName, serviceName);
-				filters.addFilter(filter);
+				AppFacade.getFilterList().addFilter(filter);
 			}
 		}
 		
-		return filters;
+		return AppFacade.getFilterList();
 	}
 	
 	private void loadFile()
 	{
-		
-		
-		
-		
-		
-		
-		
 		Intent intent = new Intent(getBaseContext(), FileDialog.class);
-        intent.putExtra(FileDialog.START_PATH, "/sdcard");
+        intent.putExtra(FileDialog.START_PATH, "/sdcard/SysAdmin");
         
         //can user select directories or not
         intent.putExtra(FileDialog.CAN_SELECT_DIR, true);

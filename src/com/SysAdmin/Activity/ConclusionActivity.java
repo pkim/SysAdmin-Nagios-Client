@@ -159,18 +159,27 @@ public class ConclusionActivity extends Activity
 				}
 			}
 			
-			else this.setResult(RESULT_OK);
+			else 
+			{
+				this.setResult(RESULT_OK);
+				this.finish();
+			}
 		}
-		else
-			this.setResult(RESULT_CANCELED);
-		this.finish();
+		else if (resultCode == RESULT_CANCELED)
+		{
+			if(requestCode != AppFacade.REQEUST_LOAD)
+			{
+				this.setResult(RESULT_CANCELED);
+				this.finish();
+			}
+		}
     }
 	
 	
 	private void saveFile()
 	{
 		Intent intent = new Intent(getBaseContext(), FileDialog.class);
-        intent.putExtra(FileDialog.START_PATH, "/sdcard");
+        intent.putExtra(FileDialog.START_PATH, "/sdcard/SysAdmin");
         
         //can user select directories or not
         intent.putExtra(FileDialog.CAN_SELECT_DIR, true);

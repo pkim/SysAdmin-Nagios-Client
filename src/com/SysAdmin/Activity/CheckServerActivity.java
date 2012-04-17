@@ -115,7 +115,7 @@ public class CheckServerActivity extends Activity {
 	        	
 	        	try 
 	        	{
-	        		this.mNagiosEntity = XMLParser.parce(FilePathFacade.GetTempFile());
+	        		this.mNagiosEntity = XMLParser.parse(FilePathFacade.GetTempFile());
 	        	}
 	        	
 	        	catch (Exception e) 

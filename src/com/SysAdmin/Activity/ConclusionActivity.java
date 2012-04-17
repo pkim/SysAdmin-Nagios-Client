@@ -46,19 +46,40 @@ public class ConclusionActivity extends Activity
 		this.mListView = (ListView)this.findViewById(R.id.listView_Conclusion_Filter);
 		this.mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		
-		ArrayAdapter<String> dataSource = new ArrayAdapter<String>(this,R.layout.list_item, R.id.textView_list,	this.getExSelected());
-		this.mListView.setAdapter(dataSource);
+		
+		if(AppFacade.getFilterList() != null)
+		{
+			ArrayList<Filter> filterArray = AppFacade.getFilterList().getFilters();
+		
+			Integer size = AppFacade.getFilterList() .getFilters().size();
+			String[] arrayAdapterSource = new String[size];
+		
+		
+			for(int i=0; i < size; i++)
+			{
+				arrayAdapterSource[i] = String.format("%s - %s", 
+							filterArray.get(i).getHostName(),
+							filterArray.get(i).getServiceName()
+							);
+			}
+		
+			ArrayAdapter<String> dataSource = new ArrayAdapter<String>(this,R.layout.list_item, R.id.textView_list, arrayAdapterSource);
+			this.mListView.setAdapter(dataSource);
+		}
 		
 		this.mEventListener_Conclusion = new EventListener_Conclusion(this);
 		this.mEventListener_Conclusion.setEvents();	
 	}
 
-	private String[] getExSelected()
+	private FilterList getExSelected()
 	{	
 		try{		
-			return this.getIntent().getExtras().getStringArray(AppFacade.GetExSelected());
-		}catch (Exception e) {
-			return new String[]{""};
+			FilterList filterList = (FilterList)this.getIntent().getExtras().getSerializable(AppFacade.GetExSelected());
+			
+			return filterList;
+		}
+		catch (Exception e) {
+			return null;
 		}
 	}
 	

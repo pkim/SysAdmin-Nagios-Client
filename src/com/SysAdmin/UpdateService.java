@@ -1,6 +1,7 @@
 package com.SysAdmin;
 
 // android
+import com.SysAdmin.Nagios.XMLParser;
 import com.SysAdmin.Nagios.Entity.NagiosEntity;
 import com.SysAdmin.Nagios.Entity.ServiceEntity;
 
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -96,17 +98,30 @@ class UpdateRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		
 		// Download status
 		
-		NagiosEntity current = AppFacade.GetCurrentEntity();
+		NagiosEntity current = null;
 		
-		for(int i =0; i<current.getServices().length; i++)
-		{
-			ServiceEntity currentService = current.getServices()[i];
-			if(currentService.isChecked())
+		try 
+    	{
+			StatusFacade.downloadStatus(AppFacade.GetURL());
+    		current = XMLParser.parce(FilePathFacade.GetTempFile());
+    		AppFacade.SetCurrentEntity(current);
+    	}
+    	
+    	catch (Exception e) 
+    	{
+    		Log.e(AppFacade.GetTag(), "Unable to parse xml file 2");
+    	}    	    	    	    	
+		
+		if(null != current)
+			for(int i =0; i<current.getServices().length; i++)
 			{
-				String service = String.format("%s: %s", currentService.getServiceDescription(), currentService.getPluginOutput());
-				cursor.addRow(new Object[]{new Integer(i), service});
+				ServiceEntity currentService = current.getServices()[i];
+				if(currentService.isChecked())
+				{
+					String service = String.format("%s: %s", currentService.getServiceDescription(), currentService.getPluginOutput());
+					cursor.addRow(new Object[]{new Integer(i), service});
+				}
 			}
-		}
 		
 		return cursor;
 	}

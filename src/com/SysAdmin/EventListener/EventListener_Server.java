@@ -1,23 +1,16 @@
 package com.SysAdmin.EventListener;
 
 // java
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import org.apache.http.util.ByteArrayBuffer;
 
 // android
 import android.app.ProgressDialog;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 // com.SysAdmin
-import com.SysAdmin.AppFacade;
+import com.SysAdmin.StatusFacade;
 import com.SysAdmin.Activity.CheckServerActivity;
 
 /**
@@ -25,7 +18,7 @@ import com.SysAdmin.Activity.CheckServerActivity;
  * Contains and handles every event of the configuration activity.
  * 
  * @author Lukas Bernreiter
- * @version 0.5, 14/03/2012
+ * @version 0.8, 14/03/2012
  * @since 0.1
  */
 public class EventListener_Server implements OnClickListener, Runnable {
@@ -77,37 +70,16 @@ public class EventListener_Server implements OnClickListener, Runnable {
 			Thread thread = new Thread(this);
 			thread.start();
 		}
-		
 	}
 	
-	public void run() {
-		InputStream inputStream = null;
+	public void run() 
+	{
+		this.mFailure = true;
 		
-		// Check if the connection is OK
 		try {
-			URL url = new URL(this.mConfigure.getURL());
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			inputStream = new BufferedInputStream(connection.getInputStream(), 1024 * 5);				
-			int current = 0;
-			
-			while((current = inputStream.read()) != -1)
-				this.mByteArrayBuffer.append((byte)current);
-			
-		} catch (Exception _e) {
-			Log.e(AppFacade.GetTag(), _e.getMessage());
-			mFailure = false;
-		}
-		finally{
-			try {
-				if(null != inputStream)
-				{
-					inputStream.close();
-					mFailure = true;
-				}				
-			} catch (IOException _e) {
-				Log.e(AppFacade.GetTag(), _e.getMessage());
-			}
-		}
+			StatusFacade.downloadStatus(this.mConfigure.getURL());
+		} catch (Exception e) { this.mFailure = false; }			
+		
 		// update UI
 		handler.sendEmptyMessage(0);
 	}

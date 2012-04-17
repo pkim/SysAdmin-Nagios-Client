@@ -27,6 +27,7 @@ public class ConclusionActivity extends Activity
 {
 	private EventListener_Conclusion mEventListener_Conclusion = null;
 	private TextView mTextView = null;
+	private TextView mURL = null;
 	private ListView mListView = null;
 	
 	/** Called when the activity is first created. */
@@ -42,6 +43,9 @@ public class ConclusionActivity extends Activity
 	{		
 		this.mTextView = (TextView)this.findViewById(R.id.textView_Conclusion_Hostname);
 		this.setHostname(AppFacade.GetHostname());
+		
+		this.mURL = (TextView)this.findViewById(R.id.textView_Conclusion_URL);
+		this.setURL(AppFacade.GetURL());
 		
 		this.mListView = (ListView)this.findViewById(R.id.listView_Conclusion_Filter);
 		this.mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -65,6 +69,11 @@ public class ConclusionActivity extends Activity
 	private void setHostname(String _hostname)
 	{
 		this.mTextView.setText("Hostname: " + _hostname);
+	}
+	
+	private void setURL(String _url)
+	{
+		this.mURL.setText("URL: " + _url);
 	}
 	
 	/** Called when the menu gets created */

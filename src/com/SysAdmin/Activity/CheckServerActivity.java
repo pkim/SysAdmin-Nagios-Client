@@ -1,8 +1,5 @@
 package com.SysAdmin.Activity;
 
-import java.io.FileOutputStream;
-
-import org.apache.http.util.ByteArrayBuffer;
 
 import com.SysAdmin.AppFacade;
 import com.SysAdmin.FilePathFacade;
@@ -118,6 +115,7 @@ public class CheckServerActivity extends Activity {
 	        	
 	        	AppFacade.SetCurrentEntity(this.mNagiosEntity);
 	        	AppFacade.SetHostname(this.getHostName());
+	        	AppFacade.SetURL(this.getNagiosURL());
 				
 				this.startActivityForResult(intent, AppFacade.GetConfigureRequestCode());
 	            break;
@@ -139,18 +137,7 @@ public class CheckServerActivity extends Activity {
 	    return true;
 	}
 	
-	/** Stores the file temporally */
-	private void writeFile()
-	{
-		ByteArrayBuffer baf = this.mEventListener_Configuration_Server.getByteArrayBuffer();
-		FileOutputStream output = null;
-		
-		try {
-			output = new FileOutputStream(FilePathFacade.GetTempFile());
-			output.write(baf.toByteArray());
-			output.close();
-		} catch (Exception _e) {Log.e(AppFacade.GetTag(), _e.getMessage());}
-	}
+	
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.d(AppFacade.GetTag(), "Result received");
@@ -202,4 +189,5 @@ public class CheckServerActivity extends Activity {
 	}
 	
 	private String getHostName(){return ((EditText)this.findViewById(R.id.editText_Host)).getText().toString();}
+	private String getNagiosURL(){return ((EditText)this.findViewById(R.id.EditTextUrl)).getText().toString();}
 }

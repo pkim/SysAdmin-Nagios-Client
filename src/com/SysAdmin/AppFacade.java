@@ -27,6 +27,7 @@ public class AppFacade
 	private static final String EX_SELECTED = "SelectedItems";
 	
 	private static String HOSTNAME ="";
+	private static String URL = "";
 	private static Integer ConfigureRequestCode = 0;
 	private static NagiosEntity NAGIOS_ENTITY = null;
 	
@@ -134,5 +135,19 @@ public class AppFacade
 	public static void SetHostname(String _hostname)
 	{
 		HOSTNAME = _hostname;
+	}
+
+	/**
+	 * @return the URL
+	 */
+	public static String GetURL() {
+		return URL;
+	}
+
+	/**
+	 * @param uRL the uRL to set
+	 */
+	public static void SetURL(String _URL) {
+		URL = _URL;
 	}
 }

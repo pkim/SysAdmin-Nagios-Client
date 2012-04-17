@@ -4,9 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.SysAdmin.AppFacade;
+import com.SysAdmin.FileHandler;
 import com.SysAdmin.MyExpandableListView;
 import com.SysAdmin.R;
 import com.SysAdmin.EventListener.EventListener_Filter;
+import com.SysAdmin.FileDialog.FileDialog;
+import com.SysAdmin.Filter.Filter;
+import com.SysAdmin.Filter.FilterList;
 import com.SysAdmin.Nagios.Entity.HostEntity;
 import com.SysAdmin.Nagios.Entity.ServiceEntity;
 
@@ -18,9 +22,13 @@ import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.TextView;
 
 /**
  * Defines the filter activity. Adds the expandable listView to the layout.
@@ -36,7 +44,8 @@ public class FilterActivity extends Activity
 	private String[] mGroups = null;
 	private String[][] mChilds = null;
 	private ExpandableListView mExpandableListView = null;
-	private String[] mSelected = null;
+	//private String[] mSelected = null;
+	
 	
 	/** Called when the activity is first created. */
 	protected void onCreate(Bundle _icicle)
@@ -48,6 +57,34 @@ public class FilterActivity extends Activity
 			this.addExpandableListView();
 		
 		this.initializeObjects();
+		
+		
+		
+		
+		// set items
+		View convertView = null;
+		View view = null;
+		
+		for(int i = 0; i < 3; i++)
+		{ 
+			for(int j=0; j<5; j++)
+			{
+
+		 view = MyExpandableListView.getChildView(i, j, convertView);
+
+		if(view != null)
+		{
+			CheckedTextView test = (CheckedTextView) view.findViewById(R.id.checkedText_Child);
+			
+			if(test != null)
+				test.setChecked(true);
+			
+					
+		}
+		
+		
+			}
+		}
 	}
 	
 	private void initializeObjects()
@@ -88,6 +125,7 @@ public class FilterActivity extends Activity
 		}
 	}
 	
+	/*
 	@SuppressWarnings("unchecked")
 	private void checkSelectedItems()
 	{		
@@ -98,10 +136,10 @@ public class FilterActivity extends Activity
 		{
 			if(checkedPositions.valueAt(i))
 			{
-				this.mSelected[i] = ((HashMap<String, String>) this.mExpandableListView.getAdapter().getItem(checkedPositions.keyAt(i))).get("CHILDNAME");
+				this.mSelected[i] = ((HashMap<String, String>) this.mExpandableListView.getAdapter().getItem(checkedPositions.keyAt(i))).get(MyExpandableListView.CHILDNAME);
 			}
 		}	
-	}
+	}*/
 		
 	public boolean onCreateOptionsMenu(Menu _menu){
 		MenuInflater inflater = getMenuInflater();
@@ -116,18 +154,26 @@ public class FilterActivity extends Activity
 	    switch (item.getItemId()) {	     
 	    
 	    case R.id.menuItemNext:
-            this.checkSelectedItems();
+            //this.checkSelectedItems();
+	    	
+            try {
+            	AppFacade.setFilterList(this.createFilterArray());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
             Intent intent = new Intent(this,ConclusionActivity.class);
             
-            if(null != this.mSelected && 0 != this.mSelected.length)
-            	intent.putExtra(AppFacade.GetExSelected(), this.mSelected);
-            
             this.startActivityForResult(intent, AppFacade.GetConfigureRequestCode());
+            
         	break;
 	    
 	    case R.id.menuItemLoad:
-	            
+	        
+	    	this.loadFile();
 	        break;
+	        
 	    case R.id.menuItemAbort:
 	    	this.setResult(RESULT_CANCELED);
 	        this.finish();
@@ -140,15 +186,127 @@ public class FilterActivity extends Activity
 	    return true;
 	}
 	
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
 		Log.d(AppFacade.GetTag(), "Result received");
 		if (resultCode == RESULT_OK)
-			this.setResult(RESULT_OK);
-		else
-			this.setResult(RESULT_CANCELED);
-		this.finish();
+		{
+			if(requestCode == AppFacade.REQEUST_LOAD)
+			{
+				String path = data.getStringExtra(FileDialog.RESULT_PATH);
+
+				if(AppFacade.getFilterList() != null)
+				{
+					try {
+						AppFacade.getFilterList().deserialize(path);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					// set items
+					View convertView = null;
+					View view = null;
+					
+					for(int i = 0; i < 3; i++)
+					{ 
+						for(int j=0; j<5; j++)
+						{
+		
+					 view = MyExpandableListView.getChildView(i, j, convertView);
+		
+					if(view != null)
+					{
+						CheckedTextView test = (CheckedTextView) view.findViewById(R.id.checkedText_Child);
+						
+						if(test != null)
+							test.setChecked(true);
+						
+								
+					}
+					
+					
+						}
+					}
+				}
+				
+			}
+			
+			else
+			{
+				this.setResult(RESULT_OK);
+				this.finish();
+			}
+		}
+		else if (resultCode == RESULT_CANCELED)
+		{
+			if(requestCode != AppFacade.REQEUST_LOAD)
+			{
+				this.setResult(RESULT_CANCELED);
+				this.finish();
+			}
+		}
+		
     }
 	
 	public ExpandableListView getExpListView(){return this.mExpandableListView;}
 	public CheckedTextView getChTxtView(){return (CheckedTextView) this.findViewById(R.id.checkedText_Child);}
+	
+	protected FilterList createFilterArray() throws Exception
+	{
+		FilterList filters = new FilterList();
+		
+		SparseBooleanArray checkedPositions = this.mExpandableListView.getCheckedItemPositions();
+		
+		String hostName    = new String();
+		String serviceName = new String();
+		
+		int size = checkedPositions.size();
+		
+		for (int i = 0; i < size; i++)
+		{
+			Boolean checkedPosition = checkedPositions.valueAt(i);
+			int itemPosition = checkedPositions.keyAt(i);
+			
+			if(checkedPosition)
+			{
+				ListAdapter listAdapter = (ListAdapter) this.mExpandableListView.getAdapter();
+				HashMap<String,String> item = (HashMap<String, String>) listAdapter.getItem(itemPosition);
+				
+				serviceName = item.get(MyExpandableListView.CHILDNAME);
+				hostName    = item.get(MyExpandableListView.GROUPNAME);
+			
+				if(hostName.isEmpty() || serviceName.isEmpty())
+					throw new Exception("Couldn't determine a filter of a checked item");
+				
+				Filter filter = new Filter(hostName, serviceName);
+				filters.addFilter(filter);
+			}
+		}
+		
+		return filters;
+	}
+	
+	private void loadFile()
+	{
+		
+		
+		
+		
+		
+		
+		
+		Intent intent = new Intent(getBaseContext(), FileDialog.class);
+        intent.putExtra(FileDialog.START_PATH, "/sdcard");
+        
+        //can user select directories or not
+        intent.putExtra(FileDialog.CAN_SELECT_DIR, true);
+        
+        //alternatively you can set file filter
+        //intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "png" });
+        
+        startActivityForResult(intent, AppFacade.REQEUST_LOAD);
+	}
+	
+	
 }

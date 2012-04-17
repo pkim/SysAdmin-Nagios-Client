@@ -2,12 +2,20 @@ package com.SysAdmin.Activity;
 
 
 // com.SysAdmin
+import java.util.ArrayList;
+
 import com.SysAdmin.AppFacade;
+import com.SysAdmin.FileHandler;
 import com.SysAdmin.R;
 import com.SysAdmin.EventListener.EventListener_Conclusion;
+import com.SysAdmin.FileDialog.FileDialog;
+import com.SysAdmin.Filter.Filter;
+import com.SysAdmin.Filter.FilterList;
 // android
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,6 +36,7 @@ public class ConclusionActivity extends Activity
 	private EventListener_Conclusion mEventListener_Conclusion = null;
 	private TextView mTextView = null;
 	private ListView mListView = null;
+	
 	
 	/** Called when the activity is first created. */
 	protected void onCreate(Bundle _icicle)
@@ -103,7 +112,11 @@ public class ConclusionActivity extends Activity
 	    switch (item.getItemId()) {	     
 	        case R.id.menuItemSave:
 	            
+	        	if(AppFacade.getFilterList()  != null)
+	        		this.saveFile();
+	        	
 	        	break;
+	        	
 	        case R.id.menuItemFinish:
 	        	this.setResult(RESULT_OK);
 	        	this.finish();
@@ -125,4 +138,46 @@ public class ConclusionActivity extends Activity
 	 * @return The ListView
 	 */
 	public ListView getListView(){ return this.mListView; }
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d(AppFacade.GetTag(), "Result received");
+		
+		if (resultCode == RESULT_OK)
+		{
+			if(requestCode == AppFacade.REQEUST_SAVE)
+			{
+				String path = data.getStringExtra(FileDialog.RESULT_PATH);
+
+				if(AppFacade.getFilterList() != null)
+				{
+					try {
+						AppFacade.getFilterList().serialize(path);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+				}
+			}
+			
+			else this.setResult(RESULT_OK);
+		}
+		else
+			this.setResult(RESULT_CANCELED);
+		this.finish();
+    }
+	
+	
+	private void saveFile()
+	{
+		Intent intent = new Intent(getBaseContext(), FileDialog.class);
+        intent.putExtra(FileDialog.START_PATH, "/sdcard");
+        
+        //can user select directories or not
+        intent.putExtra(FileDialog.CAN_SELECT_DIR, true);
+        
+        //alternatively you can set file filter
+        //intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "png" });
+        
+        startActivityForResult(intent, AppFacade.REQEUST_SAVE);
+	}
 }

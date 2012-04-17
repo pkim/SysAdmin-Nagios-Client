@@ -1,5 +1,6 @@
 package com.SysAdmin;	
 
+import com.SysAdmin.Filter.FilterList;
 import com.SysAdmin.Nagios.Entity.NagiosEntity;
 
 import android.appwidget.AppWidgetManager;
@@ -28,6 +29,18 @@ public class AppFacade
 	
 	private static Integer ConfigureRequestCode = 0;
 	private static NagiosEntity NAGIOS_ENTITY = null;
+	
+	/* FileDialog */
+	public static final int REQEUST_LOAD = 1;
+	public static final int REQEUST_SAVE = 2;
+	
+	private static FilterList filterList = new FilterList();
+	
+	
+	public static FilterList getFilterList() { return filterList; }
+	
+	public static void setFilterList(FilterList _filterList)
+	{ filterList = _filterList; }
 	
 	/** 
 	 * Returns the tag used by the application for logging 

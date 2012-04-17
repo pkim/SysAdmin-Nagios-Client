@@ -7,8 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.CheckedTextView;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
@@ -24,15 +27,15 @@ import android.widget.SimpleExpandableListAdapter;
 public class MyExpandableListView implements OnClickListener
 {
 	
-//ExpandableListAdapter
-private static ExpandableListAdapter mAdapter;
+	//ExpandableListAdapter
+	private static ExpandableListAdapter mAdapter;
 
-//ExpandableListView
-private static ExpandableListView expandableListView;
+	//ExpandableListView
+	private static ExpandableListView expandableListView;
 
-//Keys for the ExpandableListAdapter
-private static final String GROUPNAME = "GROUPNAME";
-private static final String CHILDNAME = "CHILDNAME";
+	//Keys for the ExpandableListAdapter
+	public static final String GROUPNAME = "GROUPNAME";
+	public static final String CHILDNAME = "CHILDNAME";
 	
 	private static Context context;
 	
@@ -62,7 +65,7 @@ private static final String CHILDNAME = "CHILDNAME";
 	 
 		//Group Entry
 		Map<String, String> curGroupMap;
-	 
+
 		//Create groups for the ExpandableListView
 	 
 	 	 for(int i=0;i<groupNames.length;i++)
@@ -72,13 +75,32 @@ private static final String CHILDNAME = "CHILDNAME";
 	 		 
 	 		 curGroupMap.put(GROUPNAME,groupNames[i]);
 	 		 groupData.add(curGroupMap);
+	 		 
+	 		 
+	 		//List that contains all children for one group
+			 List<Map<String, String>> children = new ArrayList<Map<String, String>>();
+	 		 
+		 	 //Map that contains one child
+		     Map<String, String> curChildMap;
+			 
+		     // add childs
+			 for (String childName: childNames[i])
+			 {
+				 curChildMap = new HashMap<String, String>();
+		    	 curChildMap.put(CHILDNAME, childName);
+		    	 curChildMap.put(GROUPNAME, groupNames[i]);
+		    	 children.add(curChildMap);	    	 
+			 }
+			 
+	    	 //Add child map to the list
+		     childData.add(children);
+		
 	 	 }
 	 
- 
+ /*
 		 for (String[] childNameArray: childNames)
 		 {
-			 //List that contains all children for one group
-			 List<Map<String, String>> children = new ArrayList<Map<String, String>>();
+			 
 		 	
 		 	 //Map that contains one child
 		     Map<String, String> curChildMap;
@@ -87,12 +109,13 @@ private static final String CHILDNAME = "CHILDNAME";
 			 {
 				 curChildMap = new HashMap<String, String>();
 		    	 curChildMap.put(CHILDNAME,childName);
+		    	 curChildMap.put(GROUPNAME,groupNames[i]);
 		    	 children.add(curChildMap);
 			 }
 			 
 			 //Add child map to the list
 		     childData.add(children);
-		 }
+		 }*/
  
 		 //Create a new adapter for the expandable listView
 		 mAdapter = new SimpleExpandableListAdapter(
@@ -112,6 +135,27 @@ private static final String CHILDNAME = "CHILDNAME";
 		 expandableListView.setItemsCanFocus(false);
 	}
 
+    public static View getChildView(int groupPosition, int childPosition, View convertView) {
+
+    	String child = getChild(groupPosition, childPosition);
+
+        if (convertView == null) {
+            LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.exp_list_child, null);
+        }
+
+        CheckedTextView childTextView = (CheckedTextView) convertView.findViewById(R.id.checkedText_Child);
+
+        childTextView.setText(child);
+
+        return convertView;
+    }
+	
+    public static String getChild(int groupPosition, int childPosition) 
+    {
+        return childNames[groupPosition][childPosition];
+    }
+    
 	public void onClick(View arg0) 
 	{
 		// TODO Auto-generated method stub

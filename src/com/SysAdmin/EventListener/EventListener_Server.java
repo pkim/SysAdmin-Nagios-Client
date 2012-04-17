@@ -7,9 +7,11 @@ import org.apache.http.util.ByteArrayBuffer;
 import android.app.ProgressDialog;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 // com.SysAdmin
+import com.SysAdmin.AppFacade;
 import com.SysAdmin.StatusFacade;
 import com.SysAdmin.Activity.CheckServerActivity;
 
@@ -78,7 +80,11 @@ public class EventListener_Server implements OnClickListener, Runnable {
 		
 		try {
 			StatusFacade.downloadStatus(this.mConfigure.getURL());
-		} catch (Exception e) { this.mFailure = false; }			
+		} catch (Exception e) 
+		{ 
+			Log.e(AppFacade.GetTag(), e.getMessage());
+			this.mFailure = false; 
+		}			
 		
 		// update UI
 		handler.sendEmptyMessage(0);

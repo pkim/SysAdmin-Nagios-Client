@@ -1,11 +1,15 @@
 package com.SysAdmin;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 
 import org.apache.http.util.ByteArrayBuffer;
 
@@ -20,24 +24,28 @@ import android.util.Log;
  */
 public abstract class StatusFacade 
 {
-	private static ByteArrayBuffer mByteArrayBuffer  = null;
-	
 	public static void downloadStatus(String _url) throws Exception
 	{
 		InputStream inputStream = null;
+		OutputStream outputStream = null;
+		int current = 0;
+		
+		_url = "http://zogelsgraben.dnsalias.com/nagios/status.xml";
 		
 		// Check if the connection is OK
 		try {
 			URL url = new URL(_url);
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			inputStream = new BufferedInputStream(connection.getInputStream(), 1024 * 5);				
-			int current = 0;
-			
-			while((current = inputStream.read()) != -1)
-				mByteArrayBuffer.append((byte)current);
+			URLConnection connection = (URLConnection) url.openConnection();
+			inputStream = new BufferedInputStream(connection.getInputStream(), 1024 * 5);
+			outputStream = new FileOutputStream(FilePathFacade.GetTempFile());
+
+			byte buff[] = new byte[1024 * 5];
+
+			while((current = inputStream.read(buff)) != -1)
+				outputStream.write(buff, 0, current);
 			
 		} catch (Exception _e) {
-			Log.e(AppFacade.GetTag(), _e.getMessage());
+			Log.e(AppFacade.GetTag(), "download failure - "+ _e.getMessage());
 			throw new Exception(_e.getMessage());
 		}
 		finally{
@@ -45,18 +53,19 @@ public abstract class StatusFacade
 				if(null != inputStream)
 				{
 					inputStream.close();
-					//writeFile();
+					
+//					writeFile(byteArrayBuffer);
 				}				
 			} catch (IOException _e) {
-				Log.e(AppFacade.GetTag(), _e.getMessage());
+				Log.e(AppFacade.GetTag(), "write or close failure"+ _e.getMessage());
 			}
 		}
 	}
 	
 	/** Stores the file temporally */
-	private static void writeFile()
+	private static void writeFile(ByteArrayBuffer _array)
 	{
-		ByteArrayBuffer baf = mByteArrayBuffer;
+		ByteArrayBuffer baf = _array;
 		FileOutputStream output = null;
 		
 		try {

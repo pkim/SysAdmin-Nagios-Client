@@ -26,7 +26,7 @@ public class XMLParser {
 	
 	private static NagiosEntity nagiosEntity;
 	
-	public static NagiosEntity parce(String _xmlFile) throws Exception
+	public static NagiosEntity parse(String _xmlFile) throws Exception
 	{
 		nagiosEntity = new NagiosEntity();
 		

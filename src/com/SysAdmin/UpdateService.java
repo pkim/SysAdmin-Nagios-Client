@@ -95,22 +95,20 @@ class UpdateRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 	private Cursor getCurrentData()
 	{
 		MatrixCursor cursor = new MatrixCursor(new String[]{"_id","name"});
-		
-		// Download status
-		
-		NagiosEntity current = null;
+		NagiosEntity newEntity = null;
+		NagiosEntity current = AppFacade.GetCurrentEntity();
 		
 		try 
     	{
-			StatusFacade.downloadStatus(AppFacade.GetURL());
-    		current = XMLParser.parce(FilePathFacade.GetTempFile());
-    		AppFacade.SetCurrentEntity(current);
-    	}
-    	
-    	catch (Exception e) 
-    	{
-    		Log.e(AppFacade.GetTag(), "Unable to parse xml file 2");
-    	}    	    	    	    	
+			StatusFacade.downloadStatus(AppFacade.GetURL());    	
+    	}    	
+    	catch (Exception e) {Log.e(AppFacade.GetTag(), "Download error");}
+		
+		try
+		{
+			newEntity = XMLParser.parse(FilePathFacade.GetTempFile());
+		}
+		catch (Exception e) {Log.e(AppFacade.GetTag(), "Parse error during update");}				
 		
 		if(null != current)
 			for(int i =0; i<current.getServices().length; i++)
@@ -118,7 +116,10 @@ class UpdateRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 				ServiceEntity currentService = current.getServices()[i];
 				if(currentService.isChecked())
 				{
-					String service = String.format("%s: %s", currentService.getServiceDescription(), currentService.getPluginOutput());
+					// Contains the new downloaded data
+					ServiceEntity newCurrentService = newEntity.getServices()[i];
+					
+					String service = String.format("%s: %s", currentService.getServiceDescription(), newCurrentService.getPluginOutput());
 					cursor.addRow(new Object[]{new Integer(i), service});
 				}
 			}

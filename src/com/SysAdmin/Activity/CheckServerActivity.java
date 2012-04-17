@@ -111,8 +111,11 @@ public class CheckServerActivity extends Activity {
 	    	// start the next activity
 	        case R.id.menuItemNext:
 	        	
+	        	AppFacade.setFilterList(new FilterList());
 	        	AppFacade.getFilterList().setHostName(this.getHostName());
 	        	AppFacade.getFilterList().setUrl(this.getURL());
+	        	
+	        	//this.writeFile();
 	        	
 	        	try 
 	        	{
@@ -124,10 +127,13 @@ public class CheckServerActivity extends Activity {
 	        		Log.e(AppFacade.GetTag(), "Unable to parse xml file");
 	        	}
 	        	
+	        	if(this.mNagiosEntity == null)
+	        		return false;
+	        	
 	        	AppFacade.SetCurrentEntity(this.mNagiosEntity);
 	        	AppFacade.SetHostname(this.getHostName());
 	        	AppFacade.SetURL(this.getUrl());
-	        	AppFacade.setFilterList(new FilterList());
+	        	
 	        	
 	        	Intent intent = new Intent(this, FilterActivity.class);
 	        					

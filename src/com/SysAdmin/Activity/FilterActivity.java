@@ -280,7 +280,52 @@ public class FilterActivity extends Activity
 	}
 
 	public void retrieveData()
-	{
+	{		
+		HostEntity[] hosts = AppFacade.GetCurrentEntity().getHosts();
+		
+		SparseBooleanArray checkedPositions = this.mExpandableListView.getCheckedItemPositions();
+		
+		String hostName    = new String();
+		String serviceName = new String();
+		
+		int size = checkedPositions.size();
+		
+		for (int i = 0; i < size; i++)
+		{
+			Boolean checkedPosition = checkedPositions.valueAt(i);
+			int itemPosition = checkedPositions.keyAt(i);
+			
+			if(checkedPosition)
+			{
+				ListAdapter listAdapter = (ListAdapter) this.mExpandableListView.getAdapter();
+				HashMap<String,String> item = (HashMap<String, String>) listAdapter.getItem(itemPosition);
+				
+				serviceName = item.get(MyExpandableListView.CHILDNAME);
+				hostName    = item.get(MyExpandableListView.GROUPNAME);
+				
+				for(int m = 0; m < hosts.length; m++)
+				{
+					if(!hostName.equals(hosts[m].getHostName()))
+					{ continue; }
+					
+					List<ServiceEntity> services = hosts[m].getServices();
+					
+					for(int j=0; j < services.size(); j++)
+					{
+						if(!serviceName.equals(services.get(j).getServiceDescription()))
+						{ continue; }
+						
+						services.get(j).check(true);
+						
+						break;
+					}
+					
+					break;
+				}
+			}
+		}
+		
+		/*
 		HostEntity[] hosts = AppFacade.GetCurrentEntity().getHosts();
 		int counter = 0;
 
@@ -305,6 +350,6 @@ public class FilterActivity extends Activity
 				}
 				counter++;
 			}
-		}		
+		}*/		
 	}
 }

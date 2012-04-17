@@ -14,7 +14,7 @@ import android.widget.RemoteViews;
  * Broadcast receiver, receives intent concerning the widget.
  * 
  * @author Lukas Bernreiter
- * @version 0.5, 14/03/2012
+ * @version 0.7, 14/03/2012
  * @since 0.1
  */
 public class SysAdminWidgetProvider extends AppWidgetProvider {
@@ -70,7 +70,7 @@ public class SysAdminWidgetProvider extends AppWidgetProvider {
 			
 			final RemoteViews rViews = new RemoteViews(_context.getPackageName(), R.layout.widget_layout);
 			rViews.setRemoteAdapter(widgetId, R.id.listView_Status_List, intent);
-			rViews.setEmptyView(R.id.listView_Status_List, R.id.empty_view);
+			rViews.setEmptyView(R.id.listView_Status_List, R.id.empty_view);						
 			
 			// create click event for the refresh button
 			final Intent refreshIntent = new Intent(_context, SysAdminWidgetProvider.class);

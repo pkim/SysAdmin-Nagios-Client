@@ -88,6 +88,43 @@ public class FilterActivity extends Activity
 		}
 	}
 	
+	public void retrieveData()
+	{
+		HostEntity[] hosts = AppFacade.GetCurrentEntity().getHosts();
+		int counter = 0;
+		
+		// Expand all group items
+		this.expandGroups();
+		// checkedPositions.keyAt(i)
+		
+		SparseBooleanArray checkedPositions = this.mExpandableListView.getCheckedItemPositions();
+		// Create the parent items
+		for (int i = 0; i < hosts.length; i++) 
+		{
+			List<ServiceEntity> services = hosts[i].getServices();
+			for (int j = 0; j < services.size(); j++) 
+			{
+				for (int l = 0; l < checkedPositions.size(); l++)
+				{
+					if(counter == checkedPositions.keyAt(l))
+					{
+						hosts[i].getServices().get(j).check(true);
+						Log.d(AppFacade.GetTag(), "Check!");
+					}
+				}
+				counter++;
+			}
+		}		
+	}
+	
+	private void expandGroups()
+	{
+		int groups = this.mExpandableListView.getExpandableListAdapter().getGroupCount();
+		
+		for (int i = 0; i < groups; i++)
+			this.mExpandableListView.expandGroup(i);
+	}
+	
 	@SuppressWarnings("unchecked")
 	private void checkSelectedItems()
 	{		
@@ -117,6 +154,8 @@ public class FilterActivity extends Activity
 	    
 	    case R.id.menuItemNext:
             this.checkSelectedItems();
+            this.retrieveData();
+            
             Intent intent = new Intent(this,ConclusionActivity.class);
             
             if(null != this.mSelected && 0 != this.mSelected.length)

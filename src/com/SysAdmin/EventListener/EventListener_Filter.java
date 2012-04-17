@@ -1,12 +1,10 @@
 package com.SysAdmin.EventListener;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
-import com.SysAdmin.AppFacade;
 import com.SysAdmin.Activity.FilterActivity;
 
 /**
@@ -38,9 +36,7 @@ public class EventListener_Filter implements OnChildClickListener
 		
 		int position = this.getPosition(_group, _child);
 		
-		Log.d(AppFacade.GetTag(), ""+position);
-		
-		_expListView.setItemChecked(position, true);
+		_expListView.setItemChecked(position, ckTextView.isChecked());
 		
 		return true;
 	}

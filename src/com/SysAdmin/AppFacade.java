@@ -24,8 +24,9 @@ public class AppFacade
 	private static final String SD 				  = Environment.getExternalStorageState();
 	private static final String FILENAME = "Widgets.xml";
 	private static final String XML_FILE = SD + "/SysAdmin/" + FILENAME;
-	private static final String EX_SELECTED = "SelectedItems"; 
+	private static final String EX_SELECTED = "SelectedItems";
 	
+	private static String HOSTNAME ="";
 	private static Integer ConfigureRequestCode = 0;
 	private static NagiosEntity NAGIOS_ENTITY = null;
 	
@@ -122,5 +123,16 @@ public class AppFacade
 	public static String GetExSelected() {
 		return EX_SELECTED;
 	}
+
+	/**
+	 * @return Retrieves the hostname
+	 */
+	public static String GetHostname() {
+		return HOSTNAME;
+	}
 	
+	public static void SetHostname(String _hostname)
+	{
+		HOSTNAME = _hostname;
+	}
 }

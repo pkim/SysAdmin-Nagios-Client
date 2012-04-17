@@ -1,6 +1,9 @@
 package com.SysAdmin;
 
 // android
+import com.SysAdmin.Nagios.Entity.NagiosEntity;
+import com.SysAdmin.Nagios.Entity.ServiceEntity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -77,7 +80,7 @@ class UpdateRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		if(null != this.mCursor)
 			this.mCursor.close();
 		
-		this.mCursor = this.getTestCursor();
+		this.mCursor = this.getCurrentData();
 		
 		// Download, parse and fill cursor
 	}
@@ -87,13 +90,22 @@ class UpdateRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 			this.mCursor.close();
 	}
 	
-	private Cursor getTestCursor()
+	private Cursor getCurrentData()
 	{
 		MatrixCursor cursor = new MatrixCursor(new String[]{"_id","name"});
 		
-		for(int i = 0; i<20; ++i)
+		// Download status
+		
+		NagiosEntity current = AppFacade.GetCurrentEntity();
+		
+		for(int i =0; i<current.getServices().length; i++)
 		{
-			cursor.addRow(new Object[]{new Integer(i), "asdf"+i});
+			ServiceEntity currentService = current.getServices()[i];
+			if(currentService.isChecked())
+			{
+				String service = String.format("%s: %s", currentService.getServiceDescription(), currentService.getPluginOutput());
+				cursor.addRow(new Object[]{new Integer(i), service});
+			}
 		}
 		
 		return cursor;

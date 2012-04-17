@@ -20,7 +20,7 @@ import android.widget.TextView;
  * Concludes the settings entered by the user.
  * 
  * @author Lukas Bernreiter
- * @version 0.5, 19/02/2012S
+ * @version 0.7, 19/02/2012S
  * @since 0.1
  */
 public class ConclusionActivity extends Activity 
@@ -41,7 +41,7 @@ public class ConclusionActivity extends Activity
 	private void initializeObjects()
 	{		
 		this.mTextView = (TextView)this.findViewById(R.id.textView_Conclusion_Hostname);
-		this.setHostname("Dummy");
+		this.setHostname(AppFacade.GetHostname());
 		
 		this.mListView = (ListView)this.findViewById(R.id.listView_Conclusion_Filter);
 		this.mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);

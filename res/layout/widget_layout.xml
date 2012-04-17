@@ -8,18 +8,19 @@
 	
 	<RelativeLayout 
 	    android:id="@+id/layout_widget_title"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"	    
+	    android:layout_width="fill_parent"
+	    android:layout_height="50sp"	    
 	    android:gravity="top"
-	    android:background="#c9c9c9" >
+	    android:background="@drawable/title" >
 	
-	    <TextView style="@android:style/Widget.Holo.TextView.SpinnerItem"
-	        android:layout_margin="8dip"
+	    <TextView style="@android:style/TextAppearance.Holo.Medium"
 	        android:id="@+id/textView_Name"
 	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
+	        android:layout_height="match_parent"
 	        android:gravity="center_vertical"
-	        android:text="@string/app_name" />
+	        android:text="@string/app_name"
+	        android:layout_marginLeft="5dp"
+	        android:textColor="@android:color/primary_text_light" />
 
 	    <ImageButton style="@android:style/Widget.Holo.Button.Borderless"
 	        android:id="@+id/imageButton_Refresh"
@@ -32,14 +33,15 @@
 	</RelativeLayout>
 	
 	<FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_below="@id/layout_widget_title"
         >
         <ListView
             android:id="@+id/listView_Status_List"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+             />
         <TextView
             android:id="@+id/empty_view"
             android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 package com.SysAdmin;
 
 // android
+import com.SysAdmin.Nagios.XMLParser;
 import com.SysAdmin.Nagios.Entity.NagiosEntity;
 import com.SysAdmin.Nagios.Entity.ServiceEntity;
 
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -93,20 +95,34 @@ class UpdateRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 	private Cursor getCurrentData()
 	{
 		MatrixCursor cursor = new MatrixCursor(new String[]{"_id","name"});
-		
-		// Download status
-		
+		NagiosEntity newEntity = null;
 		NagiosEntity current = AppFacade.GetCurrentEntity();
 		
-		for(int i =0; i<current.getServices().length; i++)
+		try 
+    	{
+			StatusFacade.downloadStatus(AppFacade.GetURL());    	
+    	}    	
+    	catch (Exception e) {Log.e(AppFacade.GetTag(), "Download error");}
+		
+		try
 		{
-			ServiceEntity currentService = current.getServices()[i];
-			if(currentService.isChecked())
-			{
-				String service = String.format("%s: %s", currentService.getServiceDescription(), currentService.getPluginOutput());
-				cursor.addRow(new Object[]{new Integer(i), service});
-			}
+			newEntity = XMLParser.parse(FilePathFacade.GetTempFile());
 		}
+		catch (Exception e) {Log.e(AppFacade.GetTag(), "Parse error during update");}				
+		
+		if(null != current)
+			for(int i =0; i<current.getServices().length; i++)
+			{
+				ServiceEntity currentService = current.getServices()[i];
+				if(currentService.isChecked())
+				{
+					// Contains the new downloaded data
+					ServiceEntity newCurrentService = newEntity.getServices()[i];
+					
+					String service = String.format("%s: %s", currentService.getServiceDescription(), newCurrentService.getPluginOutput());
+					cursor.addRow(new Object[]{new Integer(i), service});
+				}
+			}
 		
 		return cursor;
 	}

@@ -4,6 +4,6 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry kind="lib" path="O:/Projects/IT-HTL svn/SysAdmin/EE/1.5_CO/SysAdmin-Nagios-Client/flexjson-2.1.jar"/>
+	<classpathentry kind="lib" path="/home/bernreiter/Documents/work/HTL/5AHITN/PPM/Nagios/git/SysAdmin-Nagios-Client/flexjson-2.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

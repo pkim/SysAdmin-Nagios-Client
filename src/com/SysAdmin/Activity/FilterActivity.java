@@ -117,9 +117,10 @@ public class FilterActivity extends Activity
             try {
             	AppFacade.setFilterList(this.createFilterArray());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(AppFacade.GetTag(), e.getMessage());
 			}
+            
+            this.retrieveData();
             
             Intent intent = new Intent(this,ConclusionActivity.class);
             
@@ -158,8 +159,7 @@ public class FilterActivity extends Activity
 					try {
 						AppFacade.getFilterList().deserialize(path);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Log.e(AppFacade.GetTag(), e.getMessage());
 					}
 					
 					this.loadCheckedServices();
@@ -277,5 +277,40 @@ public class FilterActivity extends Activity
         startActivityForResult(intent, AppFacade.REQEUST_LOAD);
 	}
 	
-	
+	private void expandGroups()
+	{
+		int groups = this.mExpandableListView.getExpandableListAdapter().getGroupCount();
+
+		for (int i = 0; i < groups; i++)
+			this.mExpandableListView.expandGroup(i);
+	}
+
+	public void retrieveData()
+	{
+		HostEntity[] hosts = AppFacade.GetCurrentEntity().getHosts();
+		int counter = 0;
+
+		// Expand all group items
+		this.expandGroups();
+		// checkedPositions.keyAt(i)
+
+		SparseBooleanArray checkedPositions = this.mExpandableListView.getCheckedItemPositions();
+		// Create the parent items
+		for (int i = 0; i < hosts.length; i++) 
+		{
+			List<ServiceEntity> services = hosts[i].getServices();
+			for (int j = 0; j < services.size(); j++) 
+			{
+				for (int l = 0; l < checkedPositions.size(); l++)
+				{
+					if(counter == checkedPositions.keyAt(l))
+					{
+						hosts[i].getServices().get(j).check(true);
+						Log.d(AppFacade.GetTag(), "Check!");
+					}
+				}
+				counter++;
+			}
+		}		
+	}
 }

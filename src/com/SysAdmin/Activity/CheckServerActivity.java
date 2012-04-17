@@ -125,6 +125,7 @@ public class CheckServerActivity extends Activity {
 	        	
 	        	AppFacade.SetCurrentEntity(this.mNagiosEntity);
 	        	AppFacade.SetHostname(this.getHostName());
+	        	AppFacade.SetURL(this.getUrl());
 	        	
 	        	Intent intent = new Intent(this, FilterActivity.class);
 	        					
@@ -236,6 +237,7 @@ public class CheckServerActivity extends Activity {
 	private void setHostName(String _hostname){((EditText)this.findViewById(R.id.editText_Host)).setText(_hostname);}
 	
 	private void setUrl(String _url){((EditText)this.findViewById(R.id.EditTextUrl)).setText(_url);}
+	private String getUrl(){return ((EditText)this.findViewById(R.id.EditTextUrl)).getText().toString();}
 	
 	private void loadFile()
 	{

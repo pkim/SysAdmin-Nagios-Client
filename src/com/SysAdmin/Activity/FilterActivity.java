@@ -116,9 +116,7 @@ public class FilterActivity extends Activity
 	    	
             try {
             	AppFacade.setFilterList(this.createFilterArray());
-			} catch (Exception e) {
-				Log.e(AppFacade.GetTag(), e.getMessage());
-			}
+			} catch (Exception e) {}
             
             this.retrieveData();
             
@@ -158,14 +156,11 @@ public class FilterActivity extends Activity
 				{
 					try {
 						AppFacade.getFilterList().deserialize(path);
-					} catch (Exception e) {
-						Log.e(AppFacade.GetTag(), e.getMessage());
-					}
+					} catch (Exception e) {}
 					
 					this.loadCheckedServices();
 				}
 			}
-			
 			else
 			{
 				this.setResult(RESULT_OK);
@@ -180,7 +175,6 @@ public class FilterActivity extends Activity
 				this.finish();
 			}
 		}
-		
     }
 	
 	private void loadCheckedServices()

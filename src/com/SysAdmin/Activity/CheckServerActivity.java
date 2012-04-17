@@ -11,6 +11,7 @@ import com.SysAdmin.R;
 import com.SysAdmin.EventListener.EventListener_Server;
 import com.SysAdmin.FileDialog.FileDialog;
 import com.SysAdmin.Filter.Filter;
+import com.SysAdmin.Filter.FilterList;
 import com.SysAdmin.Nagios.XMLParser;
 import com.SysAdmin.Nagios.Entity.NagiosEntity;
 // android
@@ -126,6 +127,7 @@ public class CheckServerActivity extends Activity {
 	        	AppFacade.SetCurrentEntity(this.mNagiosEntity);
 	        	AppFacade.SetHostname(this.getHostName());
 	        	AppFacade.SetURL(this.getUrl());
+	        	AppFacade.setFilterList(new FilterList());
 	        	
 	        	Intent intent = new Intent(this, FilterActivity.class);
 	        					
